@@ -14,6 +14,8 @@ public class SATSolver {
 		int opcion = 0;
 		String form = null;
 		Formula formula = null;
+		boolean _2sat = false;
+		boolean horn = false;
 
 		do{
 			System.out.println("MENU");
@@ -48,12 +50,24 @@ public class SATSolver {
 			case 3: 
 				/* es satisfacible */
 				if(formula == null) break;
+				_2sat = Comprobaciones.es2SAT(formula);
+				horn = Comprobaciones.esHorn(formula);
+				
+				if(_2sat){
+					/* resolver con el algoritmo de Krom */
+				}
+				else if(horn){
+					/* resolver con el algoritmo de Unit Propagation */
+				}
+				else{
+					/* resolver con el algoritmo general */
+				}
 				break;
 			case 4:
 				/* tipo de la formula */
 				if(formula == null) break;
-				boolean _2sat = Comprobaciones.es2SAT(formula);
-				boolean horn = Comprobaciones.esHorn(formula);
+				_2sat = Comprobaciones.es2SAT(formula);
+				horn = Comprobaciones.esHorn(formula);
 				if(_2sat){
 					System.out.println("La formula es 2-SAT");
 				}
