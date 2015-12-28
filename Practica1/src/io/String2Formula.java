@@ -29,8 +29,8 @@ public class String2Formula {
 	private static Clausula parsearClausula(String clausula){
 		Clausula c = new Clausula();
 		clausula = clausula.trim();
-		clausula = clausula.replaceAll("(", "");
-		clausula = clausula.replaceAll(")", "");
+		clausula = clausula.replaceAll("\\(", "");
+		clausula = clausula.replaceAll("\\)", "");
 		String[] literales = clausula.split("\\+");
 		for(String s : literales){
 			Literal l = parsearLiteral(s);
@@ -57,16 +57,26 @@ public class String2Formula {
 		Set<Variable> vars = new HashSet<Variable>();
 		
 		formula.trim();
-		formula = formula.replaceAll("(", "");
-		formula = formula.replaceAll(")", "");
-		formula = formula.replaceAll("*", " ");
-		formula = formula.replaceAll("+", " ");
+		formula = formula.replaceAll("\\(", "");
+		formula = formula.replaceAll("\\)", "");
+		formula = formula.replaceAll("\\*", " ");
+		formula = formula.replaceAll("\\+", " ");
 		formula = formula.replaceAll("-", "");
 		
 		Scanner s = new Scanner(formula);
 		while(s.hasNext()){
-			Variable var = new Variable(s.next());
-			vars.add(var);
+			boolean found = false;
+			String nombre = s.next();
+			for(Variable v : vars){
+				if(nombre.equals(v.getNombre())){
+					found = true;
+					break;
+				}
+			}
+			if(!found){
+				Variable var = new Variable(nombre);
+				vars.add(var);
+			}
 		}
 		s.close();
 		return vars;

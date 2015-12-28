@@ -57,6 +57,7 @@ public class SATSolver {
 			if(opcion == 1 || opcion == 2){
 				// crear formula a partir del string
 				formula = String2Formula.parsearFormula(form);
+				System.out.println(formula.toString());
 			}
 		}
 		while(opcion != 5);

@@ -18,4 +18,14 @@ public class Literal {
 			return var.getValor();
 		}
 	}
+	
+	@Override
+	public String toString() {
+		String resp = "";
+		if(negado){
+			resp = "-";
+		}
+		resp = resp + var.getNombre();
+		return resp;
+	}
 }

@@ -28,4 +28,15 @@ public class Clausula {
 		}
 		return resultado;
 	}
+	
+	@Override
+	public String toString() {
+		String resp = "(";
+		for(Literal l : literales){
+			resp = resp + l.toString() + " + ";
+		}
+		resp = resp.substring(0, resp.length()-3);
+		resp = resp + ")";
+		return resp;
+	}
 }

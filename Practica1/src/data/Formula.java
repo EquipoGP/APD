@@ -36,4 +36,13 @@ public class Formula {
 	public Set<Variable> getVariables(){
 		return vars;
 	}
+
+	@Override
+	public String toString() {
+		String resp = "";
+		for(Clausula c : clausulas){
+			resp = resp + c.toString() + " * ";
+		}
+		return resp.substring(0, resp.length() - 2);
+	}
 }
