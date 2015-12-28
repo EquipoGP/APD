@@ -19,6 +19,10 @@ public class Literal {
 		}
 	}
 	
+	public boolean negado(){
+		return negado;
+	}
+	
 	@Override
 	public String toString() {
 		String resp = "";

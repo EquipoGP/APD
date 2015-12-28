@@ -29,6 +29,10 @@ public class Clausula {
 		return resultado;
 	}
 	
+	public List<Literal> getLiterales(){
+		return literales;
+	}
+	
 	@Override
 	public String toString() {
 		String resp = "(";

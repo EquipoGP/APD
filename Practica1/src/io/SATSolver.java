@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+import algorithms.Comprobaciones;
 import data.Formula;
 
 public class SATSolver {
@@ -51,13 +52,23 @@ public class SATSolver {
 			case 4:
 				/* tipo de la formula */
 				if(formula == null) break;
+				boolean _2sat = Comprobaciones.es2SAT(formula);
+				boolean horn = Comprobaciones.esHorn(formula);
+				if(_2sat){
+					System.out.println("La formula es 2-SAT");
+				}
+				if(horn){
+					System.out.println("La formula es Horn");
+				}
+				if(!horn && !_2sat){
+					System.out.println("La formula no es 2-SAT ni Horn");
+				}
 				break;
 			}
 			
 			if(opcion == 1 || opcion == 2){
 				// crear formula a partir del string
 				formula = String2Formula.parsearFormula(form);
-				System.out.println(formula.toString());
 			}
 		}
 		while(opcion != 5);

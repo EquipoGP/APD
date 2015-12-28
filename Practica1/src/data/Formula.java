@@ -33,6 +33,10 @@ public class Formula {
 		return resultado;
 	}
 	
+	public List<Clausula> getClausulas(){
+		return clausulas;
+	}
+	
 	public Set<Variable> getVariables(){
 		return vars;
 	}
