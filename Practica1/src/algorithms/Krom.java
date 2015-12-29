@@ -56,24 +56,26 @@ public class Krom {
 			
 			/* Da valor a las variables segun las clausulas incluidas */
 			for (Variable v : variables) {
-				for(Clausula c : clausulas){
 					
-					List<Literal> literales = c.getLiterales();
-					Literal l1 = literales.get(0);
-					Literal l2 = literales.get(1);
+				/* Nueva clausula (v or v) */
+				Clausula clausulaPositiva = new Clausula();
+				clausulaPositiva.addLiteral(new Literal(false, v));
+				clausulaPositiva.addLiteral(new Literal(false, v));
+				
+				/* Nueva clausula (¬v or ¬v) */
+				Clausula clausulaNegativa = new Clausula();
+				clausulaNegativa.addLiteral(new Literal(true, v));
+				clausulaNegativa.addLiteral(new Literal(true, v));
 
-					// Si aparece (v or v) se asigna true a la variable v
-					if (l1.equals(l2) &&
-						  l1.toString().equals(v.getNombre())){
-						v.setValor(true);
-						//TODO: actualizar variable en la formula
-					}
-					// Si aparece (¬v or ¬v) se asigna false a la variable v
-					else if(l1.equals(l2) &&
-						  l1.toString().equals("-" + v.getNombre())){
-						v.setValor(false);
-						//TODO: actualizar variable en la formula
-					}
+				// Si aparece (v or v) se asigna true a la variable v
+				if (clausulas.contains(clausulaPositiva)){
+					v.setValor(true);
+					//TODO: actualizar variable en la formula
+				}
+				// Si aparece (¬v or ¬v) se asigna false a la variable v
+				else if(clausulas.contains(clausulaNegativa)){
+					v.setValor(false);
+					//TODO: actualizar variable en la formula
 				}
 			}
 			
