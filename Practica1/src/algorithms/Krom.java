@@ -137,7 +137,6 @@ public class Krom {
 	}
 	
 	private static boolean formulaReducible(Formula f){
-		//TODO: comprobar si formula f es reducible
 		boolean reducible = false;
 		for(Variable v : f.getVariables()){
 			Clausula c1 = null;
@@ -161,7 +160,6 @@ public class Krom {
 	}
 	
 	private static Formula reducirFormula(Formula f){
-		//TODO: devolver reduccion de formula f
 		for(Variable v : f.getVariables()){
 			Clausula c1 = null;
 			Clausula c2 = null;
