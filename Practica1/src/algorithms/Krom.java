@@ -78,16 +78,7 @@ public class Krom {
 			}
 			
 			/* Comprueba si la formula es satisfacible */
-			if (!formulaSatisfacible(f)){
-				
-				//TODO: aplicar reduccion si es necesario y volver
-				// a comprobar la consistencia de la formula
-				
-				consistente = formulaConsistente(f);
-			}
-			else {
-				satisfacible = true;
-			}
+			satisfacible = formulaSatisfacible(f);
 		}
 		else {
 			
