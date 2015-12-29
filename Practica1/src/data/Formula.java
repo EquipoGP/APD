@@ -18,6 +18,10 @@ public class Formula {
 		clausulas.add(c);
 	}
 	
+	public void removeClausula(Clausula c){
+		clausulas.remove(c);
+	}
+	
 	public boolean getValor(){
 		boolean resultado = false;
 		if(clausulas.isEmpty()){
