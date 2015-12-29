@@ -67,7 +67,7 @@ public class Krom {
 					}
 					// Si aparece (¬v or ¬v) se asigna false a la variable v
 					else if(l1.toString().equals(l2.toString()) &&
-						  l1.toString().equals("¬" + v.getNombre())){
+						  l1.toString().equals("-" + v.getNombre())){
 						v.setValor(false);
 						//TODO: actualizar variable en la formula
 					}
@@ -113,7 +113,7 @@ public class Krom {
 					  l1.toString().equals(v.getNombre()))
 						||
 					  (l1.toString().equals(l2.toString()) &&
-					  l1.toString().equals("¬" + v.getNombre()))
+					  l1.toString().equals("-" + v.getNombre()))
 					) {
 					
 					numC++;
