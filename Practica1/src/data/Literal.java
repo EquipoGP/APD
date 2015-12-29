@@ -23,6 +23,10 @@ public class Literal {
 		return negado;
 	}
 	
+	public Variable getVariable(){
+		return var;
+	}
+	
 	@Override
 	public String toString() {
 		String resp = "";

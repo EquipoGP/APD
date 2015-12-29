@@ -62,4 +62,13 @@ public class Clausula {
 		}
 		return res;
 	}
+	
+	public boolean contains(Variable v, boolean negado){
+		for(Literal l : literales){
+			if(l.getVariable().equals(v) && l.negado() == negado){
+				return true;
+			}
+		}
+		return false;
+	}
 }
