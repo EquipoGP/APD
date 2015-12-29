@@ -30,24 +30,30 @@ public class Krom {
 			// (v or v) o (¬v or ¬v) para cada variable v
 			for(Variable v : variables){
 				
-				// TODO: Solo hay que incluir una nueva clausula si no estan
-				// ya ni (v or v) ni (¬v or ¬v)
-				
 				/* Nueva clausula (v or v) */
-				Clausula clausula = new Clausula();
-				clausula.addLiteral(new Literal(false, v));
-				clausula.addLiteral(new Literal(false, v));
-				f.addClausula(clausula);
+				Clausula clausulaPositiva = new Clausula();
+				clausulaPositiva.addLiteral(new Literal(false, v));
+				clausulaPositiva.addLiteral(new Literal(false, v));
 				
-				if (!formulaConsistente(f)) {
+				/* Nueva clausula (¬v or ¬v) */
+				Clausula clausulaNegativa = new Clausula();
+				clausulaNegativa.addLiteral(new Literal(true, v));
+				clausulaNegativa.addLiteral(new Literal(true, v));
+				
+				if (!clausulas.contains(clausulaPositiva) && 
+						!clausulas.contains(clausulaNegativa)) {
+
+					// Si no estan incluidas ya las clausulas (v or v) y
+					// (¬v or ¬v), entonces se incluye (v or v)
+					f.addClausula(clausulaPositiva);
 					
-					// Si la formula no es consistente se incluye la
-					// clausula opuesta (¬v or ¬v) y se borra (v or v)
-					f.removeClausula(clausula);
-					clausula = new Clausula();
-					clausula.addLiteral(new Literal(true, v));
-					clausula.addLiteral(new Literal(true, v));
-					f.addClausula(clausula);
+					if (!formulaConsistente(f)) {
+						
+						// Si la formula no es consistente se borra
+						// (v or v) y se incluye la clausula opuesta (¬v or ¬v)
+						f.removeClausula(clausulaPositiva);
+						f.addClausula(clausulaNegativa);
+					}
 				}
 			}
 			
