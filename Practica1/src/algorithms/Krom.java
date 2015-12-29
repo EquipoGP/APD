@@ -70,12 +70,10 @@ public class Krom {
 				// Si aparece (v or v) se asigna true a la variable v
 				if (clausulas.contains(clausulaPositiva)){
 					v.setValor(true);
-					//TODO: actualizar variable en la formula
 				}
 				// Si aparece (¬v or ¬v) se asigna false a la variable v
 				else if(clausulas.contains(clausulaNegativa)){
 					v.setValor(false);
-					//TODO: actualizar variable en la formula
 				}
 			}
 			
@@ -87,8 +85,11 @@ public class Krom {
 				
 				consistente = formulaConsistente(f);
 			}
+			else {
+				satisfacible = true;
+			}
 		}
-		else{
+		else {
 			
 			// Si la formula no es consistente no es satisfacible
 			satisfacible = false;
