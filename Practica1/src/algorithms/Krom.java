@@ -40,20 +40,17 @@ public class Krom {
 				clausulaNegativa.addLiteral(new Literal(true, v));
 				clausulaNegativa.addLiteral(new Literal(true, v));
 				
-				if (!clausulas.contains(clausulaPositiva) && 
-						!clausulas.contains(clausulaNegativa)) {
-
-					// Si no estan incluidas ya las clausulas (v or v) y
-					// (¬v or ¬v), entonces se incluye (v or v)
-					f.addClausula(clausulaPositiva);
+				// Si no estan incluidas ya las clausulas (v or v) y
+				// (¬v or ¬v), es decir, es consistente, entonces
+				// se incluye (v or v)
+				f.addClausula(clausulaPositiva);
+				
+				if (!formulaConsistente(f)) {
 					
-					if (!formulaConsistente(f)) {
-						
-						// Si la formula no es consistente se borra
-						// (v or v) y se incluye la clausula opuesta (¬v or ¬v)
-						f.removeClausula(clausulaPositiva);
-						f.addClausula(clausulaNegativa);
-					}
+					// Si la formula no es consistente se borra
+					// (v or v) y se incluye la clausula opuesta (¬v or ¬v)
+					f.removeClausula(clausulaPositiva);
+					f.addClausula(clausulaNegativa);
 				}
 			}
 			
@@ -104,31 +101,20 @@ public class Krom {
 		List<Clausula> clausulas = f.getClausulas();
 		
 		for (Variable v : variables) {
-			int numC = 0;
 			
-			/* Comprueba consistencia para una variable */
-			for(Clausula c : clausulas){
-				
-				List<Literal> literales = c.getLiterales();
-				Literal l1 = literales.get(0);
-				Literal l2 = literales.get(1);
-
-				// Comprueba si aparecen a la vez las clausulas
-				// (v or v) and (¬v or ¬v)
-				if ( (l1.equals(l2) &&
-					  l1.toString().equals(v.getNombre()))
-						||
-					  (l1.equals(l2) &&
-					  l1.toString().equals("-" + v.getNombre()))
-					) {
-					
-					numC++;
-				}
-				
-				// Si numC == 2 entonces aparecen al mismo tiempo
-				// (v or v) and (¬v or ¬v), es decir, f no es consistente
-				consistente = (numC < 2);
-				if (!consistente) break;
+			/* Nueva clausula (v or v) */
+			Clausula clausulaPositiva = new Clausula();
+			clausulaPositiva.addLiteral(new Literal(false, v));
+			clausulaPositiva.addLiteral(new Literal(false, v));
+			
+			/* Nueva clausula (¬v or ¬v) */
+			Clausula clausulaNegativa = new Clausula();
+			clausulaNegativa.addLiteral(new Literal(true, v));
+			clausulaNegativa.addLiteral(new Literal(true, v));
+			
+			if (clausulas.contains(clausulaPositiva) ||
+					clausulas.contains(clausulaNegativa)) {
+				consistente = false;
 			}
 			if (!consistente) break;
 		}
@@ -137,7 +123,6 @@ public class Krom {
 	}
 	
 	private static boolean formulaReducible(Formula f){
-		//TODO: comprobar si formula f es reducible
 		boolean reducible = false;
 		for(Variable v : f.getVariables()){
 			Clausula c1 = null;
@@ -161,7 +146,7 @@ public class Krom {
 	}
 	
 	private static Formula reducirFormula(Formula f){
-		//TODO: devolver reduccion de formula f
+		
 		for(Variable v : f.getVariables()){
 			Clausula c1 = null;
 			Clausula c2 = null;
@@ -208,7 +193,6 @@ public class Krom {
 	}
 	
 	private static boolean formulaSatisfacible(Formula f) {
-		// TODO: comprobar si formula f es satisfacible
-		return false;
+		return f.getValor();
 	}
 }
