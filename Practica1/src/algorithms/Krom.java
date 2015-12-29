@@ -162,5 +162,11 @@ public class Krom {
 	
 	private static Formula reducirFormula(Formula f){
 		//TODO: devolver reduccion de formula f
+		return null;
+	}
+	
+	private static boolean formulaSatisfacible(Formula f) {
+		// TODO: comprobar si formula f es satisfacible
+		return false;
 	}
 }
