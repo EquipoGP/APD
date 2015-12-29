@@ -152,7 +152,7 @@ public class Krom {
 				}
 			}
 			
-			if(c1 != null || c2 != null){
+			if(c1 != null && c2 != null){
 				reducible = true;
 				break;
 			}
@@ -162,7 +162,49 @@ public class Krom {
 	
 	private static Formula reducirFormula(Formula f){
 		//TODO: devolver reduccion de formula f
-		return null;
+		for(Variable v : f.getVariables()){
+			Clausula c1 = null;
+			Clausula c2 = null;
+			
+			for(Clausula c : f.getClausulas()){
+				if(c.contains(v, false)){
+					// sin negar
+					c1 = c;
+				}
+				if(c.contains(v, true)){
+					// negado
+					c2 = c;
+				}
+			}
+			
+			if(c1 != null && c2 != null){
+				List<Literal> c1ls = c1.getLiterales();
+				List<Literal> c2ls = c2.getLiterales();
+				
+				Literal notC1 = null;
+				Literal notC2 = null;
+				
+				for(Literal l : c1ls){
+					if(!l.getVariable().equals(v)){
+						notC1 = l;
+					}
+				}
+				for(Literal l : c2ls){
+					if(!l.getVariable().equals(v)){
+						notC2 = l;
+					}
+				}
+				
+				Clausula c = new Clausula();
+				c.addLiteral(notC1);
+				c.addLiteral(notC2);
+				f.addClausula(c);
+				
+				f.removeClausula(c1);
+				f.removeClausula(c2);
+			}
+		}
+		return f;
 	}
 	
 	private static boolean formulaSatisfacible(Formula f) {
