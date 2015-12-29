@@ -41,6 +41,7 @@ public class String2Formula {
 	
 	private static Literal parsearLiteral(String literal){
 		boolean negado = literal.contains("-");
+		literal = literal.trim();
 		literal = literal.replace("-", "");
 		Variable var = null;
 		for(Variable v : vars){

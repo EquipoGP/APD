@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import algorithms.Comprobaciones;
+import algorithms.Krom;
 import data.Formula;
 
 public class SATSolver {
@@ -55,6 +56,12 @@ public class SATSolver {
 				
 				if(_2sat){
 					/* resolver con el algoritmo de Krom */
+					if (Krom.krom(formula)) {
+						System.out.println("La formula es satisfacible");
+					}
+					else {
+						System.out.println("La formula NO es satisfacible");
+					}
 				}
 				else if(horn){
 					/* resolver con el algoritmo de Unit Propagation */

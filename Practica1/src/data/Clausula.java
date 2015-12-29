@@ -65,7 +65,8 @@ public class Clausula {
 	
 	public boolean contains(Variable v, boolean negado){
 		for(Literal l : literales){
-			if(l.getVariable().equals(v) && l.negado() == negado){
+			if(l.getVariable().getNombre().equals(v.getNombre())
+					&& l.negado() == negado){
 				return true;
 			}
 		}

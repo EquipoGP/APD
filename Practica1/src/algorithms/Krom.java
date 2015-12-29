@@ -16,11 +16,17 @@ public class Krom {
 		Set<Variable> variables = f.getVariables();
 		List<Clausula> clausulas = f.getClausulas();
 		
+//		for(Variable v : variables){
+//			System.out.println("Nombre: " + v.getNombre() +
+//					", Valor: " + v.getValor());
+//		}
+		
 		/* Mientras la formula es consistente y reducible se reduce */
 		while(consistente && formulaReducible(f)){
 			
 			/* Reduccion */
 			f = reducirFormula(f);
+			System.out.println("FORMULA REDUCIDA");
 			consistente = formulaConsistente(f);
 		}
 		
@@ -123,6 +129,7 @@ public class Krom {
 			Clausula c2 = null;
 			
 			for(Clausula c : f.getClausulas()){
+				System.out.println(c);
 				if(c.contains(v, false)){
 					c1 = c;
 				}
