@@ -146,7 +146,6 @@ public class Krom {
 	}
 	
 	private static Formula reducirFormula(Formula f){
-		
 		for(Variable v : f.getVariables()){
 			Clausula c1 = null;
 			Clausula c2 = null;
