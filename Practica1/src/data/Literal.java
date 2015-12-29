@@ -32,4 +32,8 @@ public class Literal {
 		resp = resp + var.getNombre();
 		return resp;
 	}
+	
+	public boolean equals(Literal l){
+		return this.toString().equals(l.toString());
+	}
 }

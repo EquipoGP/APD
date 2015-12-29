@@ -43,4 +43,23 @@ public class Clausula {
 		resp = resp + ")";
 		return resp;
 	}
+	
+	public boolean equals(Clausula c){
+		boolean res = true;
+		List<Literal> cs = c.getLiterales();
+		for(Literal l : cs){
+			boolean esta = false;
+			for(Literal li : literales){
+				if(li.equals(l)){
+					esta = true;
+					break;
+				}
+			}
+			if(!esta){
+				res = false;
+				break;
+			}
+		}
+		return res;
+	}
 }

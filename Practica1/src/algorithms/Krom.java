@@ -60,13 +60,13 @@ public class Krom {
 					Literal l2 = literales.get(1);
 
 					// Si aparece (v or v) se asigna true a la variable v
-					if (l1.toString().equals(l2.toString()) &&
+					if (l1.equals(l2) &&
 						  l1.toString().equals(v.getNombre())){
 						v.setValor(true);
 						//TODO: actualizar variable en la formula
 					}
 					// Si aparece (¬v or ¬v) se asigna false a la variable v
-					else if(l1.toString().equals(l2.toString()) &&
+					else if(l1.equals(l2) &&
 						  l1.toString().equals("-" + v.getNombre())){
 						v.setValor(false);
 						//TODO: actualizar variable en la formula
@@ -109,10 +109,10 @@ public class Krom {
 
 				// Comprueba si aparecen a la vez las clausulas
 				// (v or v) and (¬v or ¬v)
-				if ( (l1.toString().equals(l2.toString()) &&
+				if ( (l1.equals(l2) &&
 					  l1.toString().equals(v.getNombre()))
 						||
-					  (l1.toString().equals(l2.toString()) &&
+					  (l1.equals(l2) &&
 					  l1.toString().equals("-" + v.getNombre()))
 					) {
 					
