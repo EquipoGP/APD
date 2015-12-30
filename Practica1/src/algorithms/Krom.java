@@ -180,7 +180,12 @@ public class Krom {
 				Literal notC2 = null;
 				
 				for(Literal l : c1ls){
-					if(!l.getVariable().equals(v)){
+					if(!l.getVariable().equals(v)
+							||
+							(l.getVariable().equals(v) && !l.negado())){
+						// entra si no es la variable a quitar o,
+						// si siendolo, no coincide con el signo que le toca
+						// example: buscamos b, tenemos (b+-b) => coge -b
 						System.out.println("v = " + v.getNombre());
 						System.out.println("notC1 = " + l.getVariable().getNombre());
 						notC1 = l;
@@ -188,7 +193,12 @@ public class Krom {
 				}
 				for(Literal l : c2ls){
 					System.out.println(l.getVariable().getNombre() + " =? " + v.getNombre());
-					if(!l.getVariable().equals(v)){
+					if(!l.getVariable().equals(v)
+							||
+							(l.getVariable().equals(v) && l.negado())){
+						// entra si no es la variable a quitar o,
+						// si siendolo, no coincide con el signo que le toca
+						// example: buscamos b, tenemos (b+-b) => coge b
 						System.out.println("v = " + v.getNombre());
 						System.out.println("notC2 =  " + l.getVariable().getNombre());
 						notC2 = l;
