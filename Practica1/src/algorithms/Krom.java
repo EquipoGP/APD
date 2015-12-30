@@ -14,21 +14,18 @@ public class Krom {
 		boolean consistente = true;
 		boolean satisfacible = false;
 		Set<Variable> variables = f.getVariables();
-		List<Clausula> clausulas = f.getClausulas();
-		
-//		for(Variable v : variables){
-//			System.out.println("Nombre: " + v.getNombre() +
-//					", Valor: " + v.getValor());
-//		}
+
+		System.out.println("Formula sin reducir: " + f.toString());
 		
 		/* Mientras la formula es consistente y reducible se reduce */
 		while(consistente && formulaReducible(f)){
-			
 			/* Reduccion */
+			System.out.println("Reduciendo...");
 			f = reducirFormula(f);
-			System.out.println("FORMULA REDUCIDA");
 			consistente = formulaConsistente(f);
 		}
+		System.out.println("Formula reducida: " + f.toString());
+		System.out.println("Consistente: " + consistente);
 		
 		if (consistente) {
 			
@@ -60,6 +57,8 @@ public class Krom {
 				}
 			}
 			
+			System.out.println("Formula final: " + f.toString());
+			
 			/* Da valor a las variables segun las clausulas incluidas */
 			for (Variable v : variables) {
 					
@@ -74,13 +73,18 @@ public class Krom {
 				clausulaNegativa.addLiteral(new Literal(true, v));
 
 				// Si aparece (v or v) se asigna true a la variable v
-				if (clausulas.contains(clausulaPositiva)){
+				if (f.contains(clausulaPositiva)){
 					v.setValor(true);
 				}
 				// Si aparece (¬v or ¬v) se asigna false a la variable v
-				else if(clausulas.contains(clausulaNegativa)){
+				else if(f.contains(clausulaNegativa)){
 					v.setValor(false);
 				}
+			}
+			
+			System.out.println("Variables:");
+			for(Variable v : variables){
+				System.out.println(v.getNombre() + " -> " + v.getValor());
 			}
 			
 			/* Comprueba si la formula es satisfacible */
@@ -129,7 +133,6 @@ public class Krom {
 			Clausula c2 = null;
 			
 			for(Clausula c : f.getClausulas()){
-				System.out.println(c);
 				if(c.contains(v, false)){
 					c1 = c;
 				}

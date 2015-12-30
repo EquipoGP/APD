@@ -44,6 +44,20 @@ public class Formula {
 	public Set<Variable> getVariables(){
 		return vars;
 	}
+	
+	public boolean contains(Clausula c){
+		if(c == null){
+			return false;
+		}
+		else{
+			for(Clausula fc : clausulas){
+				if(c.equals(fc)){
+					return true;
+				}
+			}
+			return false;
+		}
+	}
 
 	@Override
 	public String toString() {
