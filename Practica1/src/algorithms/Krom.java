@@ -11,7 +11,7 @@ import data.Variable;
 public class Krom {
 
 	public static boolean krom(Formula f){
-		boolean consistente = true;
+		boolean consistente = formulaConsistente(f);
 		boolean satisfacible = false;
 		Set<Variable> variables = f.getVariables();
 
@@ -19,16 +19,10 @@ public class Krom {
 		
 		/* Mientras la formula es consistente y reducible se reduce */
 		while(consistente && formulaReducible(f)){
+			
 			/* Reduccion */
 			System.out.println("Reduciendo...");
 			f = reducirFormula(f);
-
-//			for (Clausula c : f.getClausulas()) {
-//				for(Literal l : c.getLiterales()) {
-//					System.out.println(l);
-//				}
-//			}
-			
 			consistente = formulaConsistente(f);
 		}
 		System.out.println("Formula reducida: " + f.toString());
@@ -111,7 +105,6 @@ public class Krom {
 	private static boolean formulaConsistente(Formula f){
 		boolean consistente = true;
 		Set<Variable> variables = f.getVariables();
-		List<Clausula> clausulas = f.getClausulas();
 		
 		for (Variable v : variables) {
 			
@@ -125,8 +118,8 @@ public class Krom {
 			clausulaNegativa.addLiteral(new Literal(true, v));
 			clausulaNegativa.addLiteral(new Literal(true, v));
 			
-			if (clausulas.contains(clausulaPositiva) ||
-					clausulas.contains(clausulaNegativa)) {
+			if (f.contains(clausulaPositiva) &&
+					f.contains(clausulaNegativa)) {
 				consistente = false;
 			}
 			if (!consistente) break;
