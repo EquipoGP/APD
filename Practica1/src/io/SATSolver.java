@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import algorithms.Comprobaciones;
 import algorithms.Krom;
+import algorithms.UnitPropagation;
 import data.Formula;
 
 public class SATSolver {
@@ -65,6 +66,12 @@ public class SATSolver {
 				}
 				else if(horn){
 					/* resolver con el algoritmo de Unit Propagation */
+					if (UnitPropagation.unitPropagation(formula)) {
+						System.out.println("La formula es satisfacible");
+					}
+					else {
+						System.out.println("La formula NO es satisfacible");
+					}
 				}
 				else{
 					/* resolver con el algoritmo general */

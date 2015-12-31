@@ -66,7 +66,6 @@ public class Clausula {
 	public boolean contains(Variable v, boolean negado){
 		for(Literal l : literales){
 			if(l == null){
-				System.out.println("WOW");
 				return false;
 			}
 			if(l.getVariable().getNombre().equals(v.getNombre())
@@ -75,5 +74,14 @@ public class Clausula {
 			}
 		}
 		return false;
+	}
+	
+	public void removeLiteral(Literal l){
+		for(int i = 0; i < literales.size(); i++){
+			Literal lit = literales.get(i);
+			if(lit.equals(l)){
+				literales.remove(i);
+			}
+		}
 	}
 }
