@@ -53,7 +53,9 @@ public class Krom {
 				// Si no estan incluidas ya las clausulas (v or v) y
 				// (¬v or ¬v), es decir, es consistente, entonces
 				// se incluye (v or v)
-				f.addClausula(clausulaPositiva);
+				if (!f.contains(clausulaPositiva)){
+					f.addClausula(clausulaPositiva);
+				}
 				
 				if (!formulaConsistente(f)) {
 					
@@ -162,11 +164,11 @@ public class Krom {
 			Clausula c2 = null;
 			
 			for(Clausula c : f.getClausulas()){
-				if(c.contains(v, false)){
+				if(c.contains(v, false) && c1 == null){
 					// sin negar
 					c1 = c;
 				}
-				if(c.contains(v, true)){
+				if(c.contains(v, true) && c2 == null){
 					// negado
 					c2 = c;
 				}
@@ -182,25 +184,25 @@ public class Krom {
 				for(Literal l : c1ls){
 					if(!l.getVariable().equals(v)
 							||
-							(l.getVariable().equals(v) && !l.negado())){
+							(l.getVariable().equals(v) && l.negado())){
 						// entra si no es la variable a quitar o,
 						// si siendolo, no coincide con el signo que le toca
 						// example: buscamos b, tenemos (b+-b) => coge -b
-						System.out.println("v = " + v.getNombre());
-						System.out.println("notC1 = " + l.getVariable().getNombre());
+//						System.out.println("v = " + v.getNombre());
+//						System.out.println("notC1 = " + l.getVariable().getNombre());
 						notC1 = l;
 					}
 				}
 				for(Literal l : c2ls){
-					System.out.println(l.getVariable().getNombre() + " =? " + v.getNombre());
+//					System.out.println(l.getVariable().getNombre() + " =? " + v.getNombre());
 					if(!l.getVariable().equals(v)
 							||
-							(l.getVariable().equals(v) && l.negado())){
+							(l.getVariable().equals(v) && !l.negado())){
 						// entra si no es la variable a quitar o,
 						// si siendolo, no coincide con el signo que le toca
 						// example: buscamos b, tenemos (b+-b) => coge b
-						System.out.println("v = " + v.getNombre());
-						System.out.println("notC2 =  " + l.getVariable().getNombre());
+//						System.out.println("v = " + v.getNombre());
+//						System.out.println("notC2 =  " + l.getVariable().getNombre());
 						notC2 = l;
 					}
 				}
