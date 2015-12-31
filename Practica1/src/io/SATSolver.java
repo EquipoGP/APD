@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import algorithms.Comprobaciones;
+import algorithms.DPLL;
 import algorithms.Krom;
 import algorithms.UnitPropagation;
 import data.Formula;
@@ -75,6 +76,12 @@ public class SATSolver {
 				}
 				else{
 					/* resolver con el algoritmo general */
+					if(DPLL.dpll(formula)){
+						System.out.println("La formula es satisfacible");
+					}
+					else{
+						System.out.println("La formula NO es satisfacible");
+					}
 				}
 				break;
 			case 4:
