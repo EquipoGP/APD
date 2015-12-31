@@ -50,7 +50,6 @@ public class String2Formula {
 				break;
 			}
 		}
-		if(var == null) System.out.println("WOW");
 		Literal lit = new Literal(negado, var);
 		return lit;
 	}
