@@ -51,20 +51,24 @@ public class Krom {
 					f.addClausula(clausulaPositiva);
 				}
 				
-				if (!formulaConsistente(f)) {
+				if (formulaReducible(f)) {
 					
 					// Si la formula no es consistente se borra
 					// (v or v) y se incluye la clausula opuesta (¬v or ¬v)
 					f.removeClausula(clausulaPositiva);
-					f.addClausula(clausulaNegativa);
+					
+					if (!f.contains(clausulaNegativa)) {
+						f.addClausula(clausulaNegativa);
+					}
 				}
 				
 				/* Reduce la formula despues de añadir la nueva clausula */
-				while(consistente && formulaReducible(f)){
-					
-					f = reducirFormula(f);
-					consistente = formulaConsistente(f);
-				}
+//				while(consistente && formulaReducible(f)){
+//					
+//					f = reducirFormula(f);
+//					consistente = formulaConsistente(f);
+//				}
+				System.out.println("Formula para variable " + v.getNombre() + ": " + f.toString());
 			}
 			
 			System.out.println("Formula final: " + f.toString());
@@ -188,23 +192,26 @@ public class Krom {
 						// entra si no es la variable a quitar o,
 						// si siendolo, no coincide con el signo que le toca
 						// example: buscamos b, tenemos (b+-b) => coge -b
-//						System.out.println("v = " + v.getNombre());
-//						System.out.println("notC1 = " + l.getVariable().getNombre());
 						notC1 = l;
 					}
 				}
 				for(Literal l : c2ls){
-//					System.out.println(l.getVariable().getNombre() + " =? " + v.getNombre());
 					if(!l.getVariable().equals(v)
 							||
 							(l.getVariable().equals(v) && !l.negado())){
 						// entra si no es la variable a quitar o,
 						// si siendolo, no coincide con el signo que le toca
 						// example: buscamos b, tenemos (b+-b) => coge b
-//						System.out.println("v = " + v.getNombre());
-//						System.out.println("notC2 =  " + l.getVariable().getNombre());
 						notC2 = l;
 					}
+				}
+				
+				if (notC1 == null){
+					notC1 = c1ls.get(0);
+				}
+				
+				if (notC2 == null){
+					notC2 = c2ls.get(0);
 				}
 				
 				Clausula c = new Clausula();
@@ -215,9 +222,9 @@ public class Krom {
 				f.removeClausula(c1);
 				f.removeClausula(c2);
 				
-				System.out.println("Reduccion: clausulas borradas: " + c1.toString() + " AND " + c2.toString());
-				System.out.println("Reduccion: clausula añadida: " + notC1.toString() + " + " + notC2.toString());
-				System.out.println("Formula reducida: " + f.toString());
+//				System.out.println("Reduccion: clausulas borradas: " + c1.toString() + " AND " + c2.toString());
+//				System.out.println("Reduccion: clausula añadida: " + notC1.toString() + " + " + notC2.toString());
+//				System.out.println("Formula reducida: " + f.toString());
 			}
 		}
 		return f;
