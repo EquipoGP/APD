@@ -58,6 +58,7 @@ public class Krom {
 					f.removeClausula(clausulaPositiva);
 					f.addClausula(clausulaNegativa);
 				}
+				f = reducirFormula(f);
 			}
 			
 			System.out.println("Formula final: " + f.toString());
