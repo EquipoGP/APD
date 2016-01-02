@@ -154,7 +154,8 @@ public class Krom {
 				}
 			}
 			
-			if(c1 != null && c2 != null){
+			if(c1 != null && c2 != null &&
+					c1 != c2){
 				reducible = true;
 				break;
 			}
