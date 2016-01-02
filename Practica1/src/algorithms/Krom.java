@@ -73,6 +73,7 @@ public class Krom {
 						consistente = formulaConsistente(f);
 					}
 				}
+				f = reducirFormula(f);
 			}
 			
 			System.out.println("Formula final: " + f.toString());
