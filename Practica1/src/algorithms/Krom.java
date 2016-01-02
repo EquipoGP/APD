@@ -49,13 +49,6 @@ public class Krom {
 				// se incluye (v or v)
 				if (!f.contains(clausulaPositiva)){
 					f.addClausula(clausulaPositiva);
-					
-					while(consistente && formulaReducible(f)){
-						
-						/* Reduccion */
-						f = reducirFormula(f);
-						consistente = formulaConsistente(f);
-					}
 				}
 				
 				if (!formulaConsistente(f)) {
@@ -64,16 +57,14 @@ public class Krom {
 					// (v or v) y se incluye la clausula opuesta (¬v or ¬v)
 					f.removeClausula(clausulaPositiva);
 					f.addClausula(clausulaNegativa);
-					
-					while(consistente && formulaReducible(f)){
-						
-						/* Reduccion */
-						System.out.println("Reduciendo...");
-						f = reducirFormula(f);
-						consistente = formulaConsistente(f);
-					}
 				}
-				f = reducirFormula(f);
+				
+				/* Reduce la formula despues de añadir la nueva clausula */
+				while(consistente && formulaReducible(f)){
+					
+					f = reducirFormula(f);
+					consistente = formulaConsistente(f);
+				}
 			}
 			
 			System.out.println("Formula final: " + f.toString());
