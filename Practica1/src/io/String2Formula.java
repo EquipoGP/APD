@@ -1,3 +1,8 @@
+/*
+ * Patricia Lazaro Tello (554309)
+ * Alejandro Royo Amondarain (560285)
+ */
+
 package io;
 
 import java.util.HashSet;
@@ -10,14 +15,25 @@ import data.Literal;
 import data.Variable;
 
 public class String2Formula {
+	/*
+	 * Clase para convertir un String a un objeto de tipo Formula (CNF)
+	 */
 	
 	private static Set<Variable> vars;
 	
+	/**
+	 * Metodo principal para parsear String
+	 * @param formula String que contiene la formula a parsear
+	 * @return un objeto de tipo Formula
+	 */
 	public static Formula parsearFormula(String formula){
+		/* obtiene las variables que usara la formula */
 		vars = getVariables(formula);
 		
 		Formula f = new Formula(vars);
 		formula = formula.trim();
+		
+		/* parsea cada clausula */
 		String[] clausulas = formula.split("\\*");
 		for(String s : clausulas){
 			Clausula c = parsearClausula(s);
@@ -26,11 +42,19 @@ public class String2Formula {
 		return f;
 	}
 	
+	/**
+	 * Metodo para parsear clausulas desde String
+	 * @param clausula String correspondiente a una clausula
+	 * @return un objeto de tipo clausula
+	 */
 	private static Clausula parsearClausula(String clausula){
 		Clausula c = new Clausula();
+		
 		clausula = clausula.trim();
 		clausula = clausula.replaceAll("\\(", "");
 		clausula = clausula.replaceAll("\\)", "");
+		
+		/* parsea cada literal */
 		String[] literales = clausula.split("\\+");
 		for(String s : literales){
 			Literal l = parsearLiteral(s);
@@ -39,10 +63,18 @@ public class String2Formula {
 		return c;
 	}
 	
+	/**
+	 * Metodo para parsear literales desde String
+	 * @param literal String correspondiente a un literal
+	 * @return un objeto de tipo literal
+	 */
 	private static Literal parsearLiteral(String literal){
 		boolean negado = literal.contains("-");
+		
 		literal = literal.trim();
 		literal = literal.replace("-", "");
+		
+		/* obtiene la variable a la que hace referencia */
 		Variable var = null;
 		for(Variable v : vars){
 			if(v.getNombre().equals(literal)){
@@ -54,9 +86,16 @@ public class String2Formula {
 		return lit;
 	}
 	
+	/**
+	 * Metodo para obtener las variables que se usan en la 
+	 * formula CNF
+	 * @param formula String que representa la formula
+	 * @return un conjunto de variables
+	 */
 	private static Set<Variable> getVariables(String formula){
 		Set<Variable> vars = new HashSet<Variable>();
 		
+		/* formatear la entrada */
 		formula.trim();
 		formula = formula.replaceAll("\\(", "");
 		formula = formula.replaceAll("\\)", "");
