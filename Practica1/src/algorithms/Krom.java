@@ -50,7 +50,10 @@ public class Krom {
 			for(Variable v : variables){
 				
 				/* Guarda la formula como pre-especial */
-				Formula f_pre_especial = f;
+				Formula f_pre_especial = new Formula(f.getVariables());
+				for (Clausula c : f.getClausulas()) {
+					f_pre_especial.addClausula(c);
+				}
 				
 				/* Nueva clausula (v or v) */
 				Clausula clausulaPositiva = new Clausula();
