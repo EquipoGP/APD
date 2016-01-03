@@ -1,19 +1,38 @@
+/*
+ * Patricia Lazaro Tello (554309)
+ * Alejandro Royo Amondarain (560285)
+ */
+
 package data;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class Clausula {
+	/*
+	 * Clase que representa una clausula en una formula CNF
+	 */
+	
 	private List<Literal> literales;
 	
+	/**
+	 * Constructor
+	 */
 	public Clausula(){
 		literales = new LinkedList<Literal>();
 	}
 	
+	/**
+	 * @param lit literal a agregar
+	 */
 	public void addLiteral(Literal lit){
 		literales.add(lit);
 	}
 	
+	/**
+	 * @return valor de la clausula, que se define como la
+	 * operacion OR de los literales
+	 */
 	public boolean getValor(){
 		boolean resultado = false;
 		if(literales.isEmpty()){
@@ -29,6 +48,9 @@ public class Clausula {
 		return resultado;
 	}
 	
+	/**
+	 * @return lista de los literales de la clausula
+	 */
 	public List<Literal> getLiterales(){
 		return literales;
 	}
@@ -63,6 +85,13 @@ public class Clausula {
 		return res;
 	}
 	
+	/**
+	 * @param v variable
+	 * @param negado true si esta negado, false en caso contrario
+	 * @return true si hay un literal en la lista que referencia
+	 * a la variable @param v cuyo signo es @param negado, y 
+	 * false en caso contrario 
+	 */
 	public boolean contains(Variable v, boolean negado){
 		for(Literal l : literales){
 			if(l == null){
@@ -76,6 +105,9 @@ public class Clausula {
 		return false;
 	}
 	
+	/**
+	 * @param l literal a ser eliminado de la clausula
+	 */
 	public void removeLiteral(Literal l){
 		for(int i = 0; i < literales.size(); i++){
 			Literal lit = literales.get(i);
