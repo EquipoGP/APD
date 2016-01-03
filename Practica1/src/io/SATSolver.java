@@ -1,3 +1,8 @@
+/*
+ * Patricia Lazaro Tello (554309)
+ * Alejandro Royo Amondarain (560285)
+ */
+
 package io;
 
 import java.io.File;
@@ -11,16 +16,28 @@ import algorithms.UnitPropagation;
 import data.Formula;
 
 public class SATSolver {
+	/*
+	 * Clase para la interaccion con el usuario
+	 */
 	
+	/**
+	 * Metodo principal para la entrada de datos por parte del usuario
+	 * @param args no utilizado
+	 * @throws FileNotFoundException si no se encuentra el fichero que
+	 * se pasa por entrada para las formulas CNF
+	 */
 	public static void main(String[] args) throws FileNotFoundException {
 		Scanner in = new Scanner(System.in);
 		int opcion = 0;
+		
 		String form = null;
 		Formula formula = null;
+		
 		boolean _2sat = false;
 		boolean horn = false;
 
 		do{
+			/* printear menu */
 			System.out.println("MENU");
 			System.out.println("======================================");
 			System.out.println("1) Formula desde fichero");
@@ -45,11 +62,13 @@ public class SATSolver {
 				}
 				sf.close();
 				break;
+				
 			case 2:
 				/* leer la formula de entrada estandar */
 				System.out.println("Introduzca la formula: ");
 				form = in.nextLine();
 				break;
+				
 			case 3: 
 				/* es satisfacible */
 				if(formula == null) break;
@@ -84,6 +103,7 @@ public class SATSolver {
 					}
 				}
 				break;
+				
 			case 4:
 				/* tipo de la formula */
 				if(formula == null) break;
