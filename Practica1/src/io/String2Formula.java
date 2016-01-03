@@ -28,18 +28,22 @@ public class String2Formula {
 	 */
 	public static Formula parsearFormula(String formula){
 		/* obtiene las variables que usara la formula */
-		vars = getVariables(formula);
-		
-		Formula f = new Formula(vars);
-		formula = formula.trim();
-		
-		/* parsea cada clausula */
-		String[] clausulas = formula.split("\\*");
-		for(String s : clausulas){
-			Clausula c = parsearClausula(s);
-			f.addClausula(c);
+		try {
+			vars = getVariables(formula);
+			Formula f = new Formula(vars);
+			formula = formula.trim();
+			
+			/* parsea cada clausula */
+			String[] clausulas = formula.split("\\*");
+			for(String s : clausulas){
+				Clausula c = parsearClausula(s);
+				f.addClausula(c);
+			}
+			return f;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return f;
+		return null;
 	}
 	
 	/**
@@ -91,8 +95,9 @@ public class String2Formula {
 	 * formula CNF
 	 * @param formula String que representa la formula
 	 * @return un conjunto de variables
+	 * @throws Exception 
 	 */
-	private static Set<Variable> getVariables(String formula){
+	private static Set<Variable> getVariables(String formula) throws Exception{
 		Set<Variable> vars = new HashSet<Variable>();
 		
 		/* formatear la entrada */
@@ -107,6 +112,10 @@ public class String2Formula {
 		while(s.hasNext()){
 			boolean found = false;
 			String nombre = s.next();
+			if(!nombre.matches("[a-zA-Z][a-zA-Z0-9_]*")){
+				s.close();
+				throw new Exception("Wrong variables");
+			}
 			for(Variable v : vars){
 				if(nombre.equals(v.getNombre())){
 					found = true;
