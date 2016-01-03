@@ -1,3 +1,8 @@
+/*
+ * Patricia Lazaro Tello (554309)
+ * Alejandro Royo Amondarain (560285)
+ */
+
 package algorithms;
 
 import java.util.List;
@@ -9,7 +14,16 @@ import data.Literal;
 import data.Variable;
 
 public class Krom {
+	/*
+	 * Clase que contiene el algoritmo de Krom para la
+	 * resolucion de problemas 2-SAT
+	 */
 
+	/**
+	 * @param f formula CNF
+	 * @return true si la formula @param f es satisfacible, false
+	 * si no lo es
+	 */
 	public static boolean krom(Formula f){
 		boolean consistente = formulaConsistente(f);
 		boolean satisfacible = false;
@@ -62,12 +76,6 @@ public class Krom {
 					}
 				}
 				
-				/* Reduce la formula despues de añadir la nueva clausula */
-//				while(consistente && formulaReducible(f)){
-//					
-//					f = reducirFormula(f);
-//					consistente = formulaConsistente(f);
-//				}
 				System.out.println("Formula para variable " + v.getNombre() + ": " + f.toString());
 			}
 			
@@ -113,6 +121,12 @@ public class Krom {
 		return satisfacible;
 	}
 	
+	/**
+	 * @param f formula CNF
+	 * @return true si la formula es consistente, false en caso contrario
+	 * Una formula es no consistente si tiene las clausulas
+	 * (x v x) y (¬x v ¬x)
+	 */
 	private static boolean formulaConsistente(Formula f){
 		boolean consistente = true;
 		Set<Variable> variables = f.getVariables();
@@ -139,6 +153,14 @@ public class Krom {
 		return consistente;
 	}
 	
+	/**
+	 * @param f formula CNF
+	 * @return true si la formula es reducible, false en caso contrario
+	 * Una formula es reducible si existe una variable afirmada en
+	 * una clausula, y la misma variable negada en otra clausula
+	 * distinta. Ejemplo:
+	 * (a + b) * (-a + c) => (b + c)
+	 */
 	private static boolean formulaReducible(Formula f){
 		boolean reducible = false;
 		for(Variable v : f.getVariables()){
@@ -163,6 +185,14 @@ public class Krom {
 		return reducible;
 	}
 	
+	/**
+	 * @param f formula CNF
+	 * @return formula reducida
+	 * Una formula es reducible si existe una variable afirmada en
+	 * una clausula, y la misma variable negada en otra clausula
+	 * distinta. Ejemplo:
+	 * (a + b) * (-a + c) => (b + c)
+	 */
 	private static Formula reducirFormula(Formula f){
 		for(Variable v : f.getVariables()){
 			Clausula c1 = null;
@@ -222,15 +252,15 @@ public class Krom {
 				
 				f.removeClausula(c1);
 				f.removeClausula(c2);
-				
-//				System.out.println("Reduccion: clausulas borradas: " + c1.toString() + " AND " + c2.toString());
-//				System.out.println("Reduccion: clausula añadida: " + notC1.toString() + " + " + notC2.toString());
-//				System.out.println("Formula reducida: " + f.toString());
 			}
 		}
 		return f;
 	}
 	
+	/**
+	 * @param f formula CNF
+	 * @return true si es satisfacible, y false si no lo es
+	 */
 	private static boolean formulaSatisfacible(Formula f) {
 		return f.getValor();
 	}
