@@ -1,3 +1,8 @@
+/*
+ * Patricia Lazaro Tello (554309)
+ * Alejandro Royo Amondarain (560285)
+ */
+
 package algorithms;
 
 import java.util.List;
@@ -8,24 +13,16 @@ import data.Literal;
 import data.Variable;
 
 public class UnitPropagation {
+	/*
+	 * Clase que contiene el algoritmo de Unit Propagation
+	 * para la resolucion de formulas del tipo Horn
+	 */
 
+	/**
+	 * @param f formula CNF
+	 * @return true si es satsfacible, false en caso contrario
+	 */
 	public static boolean unitPropagation(Formula f){
-		/*
-		 * ESTRUCTURA
-		 * ===========================================
-		 * (Si hay clausulas unitarias)
-		 * 	Bucle:
-		 * 		1. Encontrar clausula unitaria
-		 * 		2. (Si x)
-		 * 			x = true, eliminar todas las clausulas
-		 * 				que contengan x y eliminar -x de todas
-		 * 				las clausulas
-		 * 		3. (Si -x)
-		 * 			x = false, borrar x de todas las clausulas
-		 * 				y borrar todas las clausulas que contengan
-		 * 				-x
-		 */
-		
 		while(hayClausulasUnitarias(f)){
 			Clausula cl = encontrarUnitario(f);
 			Literal l = cl.getLiterales().get(0);
@@ -79,16 +76,11 @@ public class UnitPropagation {
 		return true;
 	}
 
-	private static Clausula encontrarUnitario(Formula f) {
-		List<Clausula> cs = f.getClausulas();
-		for(Clausula c : cs){
-			if(c.getLiterales().size() == 1){
-				return c;
-			}
-		}
-		return null;
-	}
-
+	/**
+	 * @param f formula CNF
+	 * @return true si hay una clausula unitaria, false si no la hay
+	 * Una clausula es unitaria si solo contiene un literal
+	 */
 	private static boolean hayClausulasUnitarias(Formula f) {
 		List<Clausula> cs = f.getClausulas();
 		for(Clausula c : cs){
@@ -97,5 +89,20 @@ public class UnitPropagation {
 			}
 		}
 		return false;
+	}
+	
+	/**
+	 * @param f formula CNF
+	 * @return una clausula unitaria
+	 * Una clausula es unitaria si solo contiene un literal
+	 */
+	private static Clausula encontrarUnitario(Formula f) {
+		List<Clausula> cs = f.getClausulas();
+		for(Clausula c : cs){
+			if(c.getLiterales().size() == 1){
+				return c;
+			}
+		}
+		return null;
 	}
 }
