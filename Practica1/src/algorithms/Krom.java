@@ -48,6 +48,9 @@ public class Krom {
 			// (v or v) o (¬v or ¬v) para cada variable v
 			for(Variable v : variables){
 				
+				/* Guarda la formula como pre-especial */
+				Formula f_pre_especial = f;
+				
 				/* Nueva clausula (v or v) */
 				Clausula clausulaPositiva = new Clausula();
 				clausulaPositiva.addLiteral(new Literal(false, v));
@@ -59,50 +62,74 @@ public class Krom {
 				clausulaNegativa.addLiteral(new Literal(true, v));
 				
 				// Si no estan incluidas ya las clausulas (v or v) y
-				// (¬v or ¬v), es decir, es consistente, entonces
-				// se incluye (v or v)
-				if (!f.contains(clausulaPositiva)){
+				// (¬v or ¬v), entonces se incluye (v or v)
+				if (!f.contains(clausulaPositiva) &&
+						!f.contains(clausulaNegativa)){
+					
 					f.addClausula(clausulaPositiva);
-				}
-				
-				if (formulaReducible(f)) {
+					v.setValor(true);
 					
-					// Si la formula no es consistente se borra
-					// (v or v) y se incluye la clausula opuesta (¬v or ¬v)
-					f.removeClausula(clausulaPositiva);
-					
-					if (!f.contains(clausulaNegativa)) {
-						f.addClausula(clausulaNegativa);
+					/* Reduce la formula con la clausula especial */
+					while(consistente && formulaReducible(f)){
+						f = reducirFormula(f);
+						consistente = formulaConsistente(f);
 					}
+					
+					System.out.println("Formula con clausula reducida: " + f.toString());
+					
+					// Combina formula anterior a la inclusion de la clausula 
+					// y la formula resultante de la reduccion con la clausula
+					List<Clausula> clausulas_pre_especial = f_pre_especial.getClausulas();
+					List<Clausula> clausulas_post_especial = f.getClausulas();
+					Formula fCombinada = new Formula(f.getVariables());
+					for (Clausula c : clausulas_pre_especial) {
+						fCombinada.addClausula(c);
+					}
+					for (Clausula c : clausulas_post_especial) {
+						fCombinada.addClausula(c);
+					}
+					
+					System.out.println("Formula combinada: " + fCombinada.toString());
+					
+					/* Reduce la nueva formula combinada */
+					while(consistente && formulaReducible(fCombinada)){
+						fCombinada = reducirFormula(fCombinada);
+						consistente = formulaConsistente(fCombinada);
+					}
+					
+					System.out.println("Formula combinada reducida: " + fCombinada.toString());
+					
+					/* Elimina las clausulas duplicadas */
+					List<Clausula> nuevasClausulas = fCombinada.getClausulas();
+					for (int i = 0; i < nuevasClausulas.size(); i++) {
+						Clausula c1 = nuevasClausulas.get(i);
+						int veces = 0;
+						for (int j = 0; j < nuevasClausulas.size(); j++) {
+							Clausula c2 = nuevasClausulas.get(i);
+							if (c1.equals(c2)) {
+								veces++;
+								System.out.println(c1 + " equals " + c2 + " - " + veces);
+							}
+							if (veces > 1) {
+								nuevasClausulas.remove(c2);
+								System.out.println("Nuevas clausulas actualizado: " + fCombinada.toString());
+							}
+						}
+					}
+					System.out.println("Formula combinada sin duplicar: " + fCombinada.toString());
+					f = fCombinada;
+				}
+				else if (f.contains(clausulaPositiva)) {
+					v.setValor(true);
+				}
+				else if (f.contains(clausulaNegativa)) {
+					v.setValor(false);
 				}
 				
 				System.out.println("Formula para variable " + v.getNombre() + ": " + f.toString());
 			}
 			
 			System.out.println("Formula final: " + f.toString());
-			
-			/* Da valor a las variables segun las clausulas incluidas */
-			for (Variable v : variables) {
-					
-				/* Nueva clausula (v or v) */
-				Clausula clausulaPositiva = new Clausula();
-				clausulaPositiva.addLiteral(new Literal(false, v));
-				clausulaPositiva.addLiteral(new Literal(false, v));
-				
-				/* Nueva clausula (¬v or ¬v) */
-				Clausula clausulaNegativa = new Clausula();
-				clausulaNegativa.addLiteral(new Literal(true, v));
-				clausulaNegativa.addLiteral(new Literal(true, v));
-
-				// Si aparece (v or v) se asigna true a la variable v
-				if (f.contains(clausulaPositiva)){
-					v.setValor(true);
-				}
-				// Si aparece (¬v or ¬v) se asigna false a la variable v
-				else if(f.contains(clausulaNegativa)){
-					v.setValor(false);
-				}
-			}
 			
 			System.out.println("Variables:");
 			for(Variable v : variables){
