@@ -5,6 +5,7 @@
 
 package algorithms;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -100,22 +101,25 @@ public class Krom {
 					System.out.println("Formula combinada reducida: " + fCombinada.toString());
 					
 					/* Elimina las clausulas duplicadas */
-					List<Clausula> nuevasClausulas = fCombinada.getClausulas();
-					for (int i = 0; i < nuevasClausulas.size(); i++) {
-						Clausula c1 = nuevasClausulas.get(i);
+					List<Clausula> clausulas = new LinkedList<Clausula>();
+					for(Clausula c1 : fCombinada.getClausulas()){
 						int veces = 0;
-						for (int j = 0; j < nuevasClausulas.size(); j++) {
-							Clausula c2 = nuevasClausulas.get(i);
-							if (c1.equals(c2)) {
+						for(Clausula c2 : clausulas){
+							if(c1.equals(c2)){
 								veces++;
-								System.out.println(c1 + " equals " + c2 + " - " + veces);
-							}
-							if (veces > 1) {
-								nuevasClausulas.remove(c2);
-								System.out.println("Nuevas clausulas actualizado: " + fCombinada.toString());
 							}
 						}
+						if(veces == 0){
+							clausulas.add(c1);
+						}
 					}
+					
+					Set<Variable> vars = fCombinada.getVariables();
+					fCombinada = new Formula(vars);
+					for(Clausula c : clausulas){
+						fCombinada.addClausula(c);
+					}
+					
 					System.out.println("Formula combinada sin duplicar: " + fCombinada.toString());
 					f = fCombinada;
 				}
