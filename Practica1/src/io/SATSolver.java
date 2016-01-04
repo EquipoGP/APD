@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 import algorithms.Comprobaciones;
 import algorithms.DPLL;
-import algorithms.Krom;
+import algorithms.LimitedBacktracking;
 import algorithms.UnitPropagation;
 import data.Formula;
 
@@ -77,7 +77,7 @@ public class SATSolver {
 				
 				if(_2sat){
 					/* resolver con el algoritmo de Krom */
-					if (Krom.krom(formula)) {
+					if(LimitedBacktracking.limitedBT(formula)){
 						System.out.println("La formula es satisfacible");
 					}
 					else {
