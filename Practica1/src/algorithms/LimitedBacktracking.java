@@ -48,7 +48,7 @@ public class LimitedBacktracking {
 	
 	private static boolean limitedBacktracking(Formula f){
 		if(clausula_falsa(f)){
-			System.out.println("Clausula falsa");
+//			System.out.println("Clausula falsa");
 			return false;
 		}
 		if(clausulas_triviales(f)){
@@ -58,11 +58,11 @@ public class LimitedBacktracking {
 					l.getVariable().setValor(!l.negado());
 				}
 			}
-			System.out.println("Clausula trivial");
+//			System.out.println("Clausula trivial");
 			return limitedBacktracking(f);
 		}
 		if(todas_seteadas(f)){
-			System.out.println("Fin del algoritmo");
+//			System.out.println("Fin del algoritmo");
 			return true;
 		}
 		
@@ -78,12 +78,12 @@ public class LimitedBacktracking {
 		
 		// probar con la afirmacion
 		v.setValor(true);
-		System.out.println("Probando con " + v.getNombre() + " = true");
-		System.out.println("Formula :" + f.toString());
+//		System.out.println("Probando con " + v.getNombre() + " = true");
+//		System.out.println("Formula :" + f.toString());
 		if(!limitedBacktracking(f)){
 			// probar con la negacion
 			v.setValor(false);
-			System.out.println("Probando con " + v.getNombre() + " = false");
+//			System.out.println("Probando con " + v.getNombre() + " = false");
 			if(!limitedBacktracking(f)){
 				return false;
 			}

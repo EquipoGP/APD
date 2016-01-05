@@ -25,10 +25,17 @@ public class DPLL {
 	private static List<Variable> vars;
 	
 	/**
-	 * @param f formula CNF
+	 * @param form formula CNF
 	 * @return true si la formula @param f es satisfacible, o false si no lo es
 	 */
-	public static boolean dpll(Formula f){
+	public static boolean dpll(Formula form){
+		
+		/* No modifica la variable formula */
+		Formula f = new Formula(form.getVariables());
+		for (Clausula c : form.getClausulas()) {
+			f.addClausula(c);
+		}
+		
 		vars = new LinkedList<Variable>();
 		vars.addAll(f.getVariables());
 		return DPLLAlgorithm(f);
