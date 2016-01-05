@@ -76,7 +76,8 @@ public class SATSolver {
 				horn = Comprobaciones.esHorn(formula);
 				
 				if(_2sat){
-					/* resolver con el algoritmo de Krom */
+					System.out.println("Algoritmo LB");
+					/* resolver con el algoritmo de Limited Backtracking */
 					if(LimitedBacktracking.limitedBT(formula)){
 						System.out.println("La formula es satisfacible");
 					}
@@ -85,6 +86,7 @@ public class SATSolver {
 					}
 				}
 				else if(horn){
+					System.out.println("Algoritmo Unit Propagation");
 					/* resolver con el algoritmo de Unit Propagation */
 					if (UnitPropagation.unitPropagation(formula)) {
 						System.out.println("La formula es satisfacible");
@@ -94,6 +96,7 @@ public class SATSolver {
 					}
 				}
 				else{
+					System.out.println("Algoritmo general");
 					/* resolver con el algoritmo general */
 					if(DPLL.dpll(formula)){
 						System.out.println("La formula es satisfacible");
@@ -124,6 +127,7 @@ public class SATSolver {
 			if(opcion == 1 || opcion == 2){
 				// crear formula a partir del string
 				formula = String2Formula.parsearFormula(form);
+				System.out.println(formula.toString());
 			}
 		}
 		while(opcion != 5);

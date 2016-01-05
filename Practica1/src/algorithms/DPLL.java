@@ -22,13 +22,14 @@ public class DPLL {
 	 */
 	
 	private static Random r = new Random();
-	private static List<Variable> vars = new LinkedList<Variable>();
+	private static List<Variable> vars;
 	
 	/**
 	 * @param f formula CNF
 	 * @return true si la formula @param f es satisfacible, o false si no lo es
 	 */
 	public static boolean dpll(Formula f){
+		vars = new LinkedList<Variable>();
 		vars.addAll(f.getVariables());
 		return DPLLAlgorithm(f);
 	}

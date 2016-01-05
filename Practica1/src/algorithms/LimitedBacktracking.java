@@ -38,9 +38,10 @@ public class LimitedBacktracking {
 	 */
 	
 	private static Random r = new Random();
-	private static List<Variable> vars = new LinkedList<Variable>();
+	private static List<Variable> vars;
 	
 	public static boolean limitedBT(Formula f){
+		vars = new LinkedList<Variable>();
 		vars.addAll(f.getVariables());
 		return limitedBacktracking(f);
 	}
@@ -78,6 +79,7 @@ public class LimitedBacktracking {
 		// probar con la afirmacion
 		v.setValor(true);
 		System.out.println("Probando con " + v.getNombre() + " = true");
+		System.out.println("Formula :" + f.toString());
 		if(!limitedBacktracking(f)){
 			// probar con la negacion
 			v.setValor(false);
