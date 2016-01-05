@@ -114,6 +114,10 @@ public class DPLL {
 			}
 		}
 		
+		if(todas_seteadas(f)){
+			return f.getValor();
+		}
+		
 		// random variable
 		boolean continuar = false;
 		Variable v = null;
@@ -170,6 +174,15 @@ public class DPLL {
 		}
 		
 		return consistente;
+	}
+	
+	private static boolean todas_seteadas(Formula f) {
+		for(Variable v : f.getVariables()){
+			if(!v.isSet()){
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
