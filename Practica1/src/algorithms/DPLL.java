@@ -138,30 +138,35 @@ public class DPLL {
 	/**
 	 * @param f formula CNF
 	 * @return true si la formula es consistente y false si no lo es
-	 * Una formula es no consistente si se encuentran las clausulas
-	 * (x v x) y (¬x v ¬x)
+	 * Una formula es no consistente si se encuentran los literales
+	 * x y ¬x en la formula
 	 */
 	private static boolean formulaConsistente(Formula f){
 		boolean consistente = true;
 		Set<Variable> variables = f.getVariables();
+		List<Literal> literales = new LinkedList<Literal>();
+		
+		for(Clausula c : f.getClausulas()){
+			literales.addAll(c.getLiterales());
+		}
 		
 		for (Variable v : variables) {
-			
-			/* Nueva clausula (v or v) */
-			Clausula clausulaPositiva = new Clausula();
-			clausulaPositiva.addLiteral(new Literal(false, v));
-			clausulaPositiva.addLiteral(new Literal(false, v));
-			
-			/* Nueva clausula (¬v or ¬v) */
-			Clausula clausulaNegativa = new Clausula();
-			clausulaNegativa.addLiteral(new Literal(true, v));
-			clausulaNegativa.addLiteral(new Literal(true, v));
-			
-			if (f.contains(clausulaPositiva) &&
-					f.contains(clausulaNegativa)) {
-				consistente = false;
+			int afirmados = 0;
+			int negados = 0;
+			for(Literal l : literales){
+				if(l.getVariable().getNombre().equals(v.getNombre())){
+					if(l.negado()){
+						negados++;
+					}
+					else{
+						afirmados++;
+					}
+				}
 			}
-			if (!consistente) break;
+			if(afirmados != 0 && negados != 0){
+				consistente = false;
+				break;
+			}
 		}
 		
 		return consistente;
