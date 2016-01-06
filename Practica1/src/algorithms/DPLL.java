@@ -113,7 +113,7 @@ public class DPLL {
 					c.removeLiteral(new Literal(!l.negado(), l.getVariable()));
 					if(c.getLiterales().isEmpty()){
 						/* 
-						 * nos hemos cargado todos los literales de la
+						 * hemos eliminado todos los literales de la
 						 * clausula sin conseguir que ninguno fuera cierto
 						 */
 						return false;
@@ -184,6 +184,11 @@ public class DPLL {
 		return consistente;
 	}
 	
+	/**
+	 * @param f formula CNF
+	 * @return true si todas las variables de la formula tienen
+	 * un valor asignado
+	 */
 	private static boolean todas_seteadas(Formula f) {
 		for(Variable v : f.getVariables()){
 			if(!v.isSet()){

@@ -101,7 +101,7 @@ public class String2Formula {
 		Set<Variable> vars = new HashSet<Variable>();
 		
 		/* formatear la entrada */
-		formula.trim();
+		formula = formula.trim();
 		formula = formula.replaceAll("\\(", "");
 		formula = formula.replaceAll("\\)", "");
 		formula = formula.replaceAll("\\*", " ");

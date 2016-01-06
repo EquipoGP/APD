@@ -15,58 +15,62 @@ import data.Literal;
 import data.Variable;
 
 public class LimitedBacktracking {
-
 	/*
-	 * ESTRUCTURA
-	 * ===============================
-	 * si(clausula == false){
-	 * 	volver atras
-	 * }
-	 * si(clausula tiene una variable seteada){
-	 * 	setear la otra para que sea true la clausula
-	 * 	volver al punto 1
-	 * }
-	 * si(todo bien hasta este punto){
-	 * 	coger variable
-	 * 	afirmarla
-	 * 	probar
-	 * 	si no funciona
-	 * 		negar variable
-	 * 		probar
-	 * 		si no funciona
-	 * 			return false
+	 * Clase que contiene el algoritmo de LimitedBacktracking
+	 * para la comprobacion de satisfacibilidad en problemas
+	 * de formulas CNF 2-SAT
 	 */
 	
 	private static Random r = new Random();
 	private static List<Variable> vars;
 	
+	/**
+	 * @param f formula CNF
+	 * @return true si la formula es satisfacible, false en 
+	 * caso contrario
+	 */
 	public static boolean limitedBT(Formula f){
 		vars = new LinkedList<Variable>();
 		vars.addAll(f.getVariables());
 		return limitedBacktracking(f);
 	}
 	
+	/**
+	 * @param f formula CNF
+	 * @return true si la formula es satisfacible, false en
+	 * caso contrario
+	 */
 	private static boolean limitedBacktracking(Formula f){
 		if(clausula_falsa(f)){
-//			System.out.println("Clausula falsa");
+			// si hay una clausula a false, no es satisfacible
 			return false;
 		}
 		if(clausulas_triviales(f)){
+			/*
+			 * Si hay clausulas triviales, obtenemos una de esas
+			 * clausulas y hacemos que sea true
+			 */
 			Clausula c = clausula_trivial(f);
 			for(Literal l : c.getLiterales()){
 				if(!l.getVariable().isSet()){
 					l.getVariable().setValor(!l.negado());
 				}
 			}
-//			System.out.println("Clausula trivial");
 			return limitedBacktracking(f);
 		}
 		if(todas_seteadas(f)){
-//			System.out.println("Fin del algoritmo");
+			/*
+			 * el algoritmo termina si se han conseguido setear
+			 * todas las variables 
+			 */
 			return true;
 		}
 		
-		// random variable
+		/*
+		 * Se obtiene una variable no seteada de forma aleatoria y
+		 * se setea su valor a true y false para comprobar la
+		 * satisfacibilidad en los dos casos.
+		 */
 		boolean continuar = false;
 		Variable v = null;
 		while(!continuar){
@@ -78,12 +82,9 @@ public class LimitedBacktracking {
 		
 		// probar con la afirmacion
 		v.setValor(true);
-//		System.out.println("Probando con " + v.getNombre() + " = true");
-//		System.out.println("Formula :" + f.toString());
 		if(!limitedBacktracking(f)){
 			// probar con la negacion
 			v.setValor(false);
-//			System.out.println("Probando con " + v.getNombre() + " = false");
 			if(!limitedBacktracking(f)){
 				return false;
 			}
@@ -96,6 +97,11 @@ public class LimitedBacktracking {
 		}
 	}
 	
+	/**
+	 * @param f formula CNF
+	 * @return true si todas las variables de la formula
+	 * tienen valor asignado, false en caso contrario
+	 */
 	private static boolean todas_seteadas(Formula f) {
 		for(Variable v : f.getVariables()){
 			if(!v.isSet()){

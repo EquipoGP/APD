@@ -66,6 +66,11 @@ public class Clausula {
 		return resp;
 	}
 	
+	/**
+	 * @param c clausula que comparar
+	 * @return true si las clausulas son iguales,
+	 * false si no lo son
+	 */
 	public boolean equals(Clausula c){
 		boolean res = true;
 		List<Literal> cs = c.getLiterales();

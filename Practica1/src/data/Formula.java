@@ -98,6 +98,7 @@ public class Formula {
 		for(Clausula c : clausulas){
 			resp = resp + c.toString() + " * ";
 		}
-		return resp.substring(0, resp.length() - 2);
+		resp = resp.substring(0, resp.length() - 2);
+		return resp.trim();
 	}
 }
