@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.Set;
 
 import algorithms.Comprobaciones;
 import algorithms.DPLL;
@@ -63,6 +64,11 @@ public class SATSolverPruebas {
 		}
 	}
 	
+	/**
+	 * @param nombreFichero nombre del fichero de formulas
+	 * @throws FileNotFoundException si no se encuentra el
+	 * fichero @param nombreFichero
+	 */
 	private static void casosDePrueba(String nombreFichero) 
 			throws FileNotFoundException {
 		
@@ -111,11 +117,17 @@ public class SATSolverPruebas {
 		leer.close();
 	}
 	
+	/**
+	 * @param numFormulas numero de formulas
+	 * @param numVariables numero de variables
+	 * @param numClausulas numero de clausulas
+	 * Ejecuta pruebas de eficiencia con los parametros
+	 */
 	private static void pruebasDeEficiencia(int numFormulas, 
 			int numVariables, int numClausulas) {
 		
 		/* Genera formulas aleatorias para cada tipo de algoritmo */
-		HashSet<Variable> variables = generarVariablesAleatorias(numVariables);
+		Set<Variable> variables = generarVariablesAleatorias(numVariables);
 		
 		List<Variable> lista_variables = new LinkedList<Variable>();
 		for (Variable v : variables) {
@@ -146,6 +158,7 @@ public class SATSolverPruebas {
 			tiempoTotalLB += duration;
 		}
 		
+		tiempoTotalLB = tiempoTotalLB / numFormulas;
 		System.out.println("OK");
 		System.out.printf("Generando formulas Horn-SAT...");
 		
@@ -170,6 +183,7 @@ public class SATSolverPruebas {
 			tiempoTotalUP += duration;
 		}
 		
+		tiempoTotalUP = tiempoTotalUP / numFormulas;
 		System.out.println("OK");
 		System.out.printf("Generando formulas para SAT general...");
 		
@@ -193,6 +207,8 @@ public class SATSolverPruebas {
 			double duration = (endTime - startTime) / (1000000.0);
 			tiempoTotalDPLL += duration;
 		}
+		
+		tiempoTotalDPLL = tiempoTotalDPLL / numFormulas;
 		System.out.println("OK");
 		
 		/* Muestra los resultados finales */
@@ -207,8 +223,12 @@ public class SATSolverPruebas {
 		System.out.println();
 	}
 	
-	private static HashSet<Variable> generarVariablesAleatorias(int numVariables) {
-		HashSet<Variable> variables = new HashSet<Variable>();
+	/**
+	 * @param numVariables numero de variables a generar
+	 * @return conjunto de variables generadas
+	 */
+	private static Set<Variable> generarVariablesAleatorias(int numVariables) {
+		Set<Variable> variables = new HashSet<Variable>();
 		int vars = 0;
 		while (vars < numVariables) {
 			String nombre = "v" + vars;
@@ -219,7 +239,14 @@ public class SATSolverPruebas {
 		return variables;
 	}
 	
-	private static Formula generarFormulaAleatoria(HashSet<Variable> variables,
+	/**
+	 * @param variables variables que utilizar
+	 * @param numClausulas numero de clausulas a generar
+	 * @param lista_variables
+	 * @param tipo
+	 * @return
+	 */
+	private static Formula generarFormulaAleatoria(Set<Variable> variables,
 			int numClausulas, List<Variable> lista_variables, String tipo) {
 		Formula formula = new Formula(variables);
 		for (int i = 0; i < numClausulas; i++) {
@@ -229,7 +256,13 @@ public class SATSolverPruebas {
 		return formula;
 	}
 	
-	private static Clausula generarClausulaAleatoria(List<Variable> variables, String tipo) {
+	/**
+	 * @param variables variables que utilizar
+	 * @param tipo tipo de la formula a la que pertenece la clausula
+	 * @return una clausula de tipo @param tipo
+	 */
+	private static Clausula generarClausulaAleatoria(List<Variable> variables, 
+			String tipo) {
 		Clausula clausula = new Clausula();
 		Random gen = new Random();
 		int numLiterales = gen.nextInt(variables.size() - 1) + 1;
