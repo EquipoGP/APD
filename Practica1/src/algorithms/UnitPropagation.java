@@ -51,10 +51,12 @@ public class UnitPropagation {
 			}
 			f.removeClausula(cl);
 			
-			for(Clausula c : f.getClausulas()){
+			for (int i = 0; i < f.getClausulas().size(); i++) {
+				Clausula c = f.getClausulas().get(i);
 				if(c.contains(l.getVariable(), l.negado())){
 					// quitar clausulas que tengan x = true
 					f.removeClausula(c);
+					i--;
 				}
 				if(c.contains(l.getVariable(), !l.negado())){
 					// quitar literales que tengan x = false
