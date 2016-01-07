@@ -217,9 +217,9 @@ public class SATSolverPruebas {
 								    + ", " + numVariables + " variables"
 								  	+ ", " + numClausulas + " clausulas.");
 		System.out.println("===================================================");
-		System.out.println("Tiempo total LB: " + tiempoTotalLB + " ms");
-		System.out.println("Tiempo total UP: " + tiempoTotalUP + " ms");
-		System.out.println("Tiempo total DPLL: " + tiempoTotalDPLL + " ms");
+		System.out.println("Tiempo medio LB: " + tiempoTotalLB + " ms");
+		System.out.println("Tiempo medio UP: " + tiempoTotalUP + " ms");
+		System.out.println("Tiempo medio DPLL: " + tiempoTotalDPLL + " ms");
 		System.out.println();
 	}
 	
