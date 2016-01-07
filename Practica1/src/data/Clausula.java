@@ -58,10 +58,16 @@ public class Clausula {
 	@Override
 	public String toString() {
 		String resp = "(";
-		for(Literal l : literales){
-			resp = resp + l.toString() + " + ";
+		for (int i = 0; i < literales.size(); i++) {
+			if (i < literales.size() - 1) {
+				Literal l = literales.get(i);
+				resp = resp + l.toString() + " + ";
+			}
+			else if (i == literales.size() - 1) {
+				Literal l = literales.get(i);
+				resp = resp + l.toString();
+			}
 		}
-		resp = resp.substring(0, resp.length()-3);
 		resp = resp + ")";
 		return resp;
 	}

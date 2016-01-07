@@ -7,7 +7,6 @@ package io;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -37,6 +36,8 @@ public class SATSolverPruebas {
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		if(args.length == 1){
+			System.out.println();
+			System.out.println("===============");
 			System.out.println("CASOS DE PRUEBA");
 			System.out.println("===============");
 			
@@ -45,6 +46,8 @@ public class SATSolverPruebas {
 			System.out.println();
 		}
 		else if (args.length == 3){
+			System.out.println();
+			System.out.println("==================");
 			System.out.println("PRUEBAS EFICIENCIA");
 			System.out.println("==================");
 			
@@ -78,16 +81,19 @@ public class SATSolverPruebas {
 			if (Comprobaciones.es2SAT(formula)) {
 				tipo = "2-SAT";
 				algoritmo = "Limited Backtracking";
+				System.out.printf("[" + formula + "]");
 				satisfacible = LimitedBacktracking.limitedBT(formula);
 			}
 			else if (Comprobaciones.esHorn(formula)) {
 				tipo = "Horn-SAT";
 				algoritmo = "Unit Propagation";
+				System.out.printf("[" + formula + "]");
 				satisfacible = UnitPropagation.unitPropagation(formula);
 			}
 			else {
 				tipo = "Caso general";
 				algoritmo = "DPLL";
+				System.out.printf("[" + formula + "]");
 				satisfacible = DPLL.dpll(formula);
 			}
 			
@@ -99,7 +105,7 @@ public class SATSolverPruebas {
 			}
 			
 			/* Muestra por pantalla el resultado de cada prueba */
-			System.out.println("[" + formula + "] => " + sat + 
+			System.out.println(" => " + sat + 
 					" (" + tipo + " , " + algoritmo + ")");
 		}
 		leer.close();
@@ -115,9 +121,9 @@ public class SATSolverPruebas {
 		for (Variable v : variables) {
 			lista_variables.add(v);
 		}
-		
-		System.out.println("Limited Backtracking");
-		System.out.println("====================");
+
+		System.out.println();
+		System.out.printf("Generando formulas 2-SAT...");
 		
 		/* Algoritmo Limited Backtracking (LB) */
 		List<Formula> formulasLB = new LinkedList<Formula>();
@@ -125,22 +131,23 @@ public class SATSolverPruebas {
 			Formula f = generarFormulaAleatoria(variables, 
 					numClausulas,lista_variables,"LB");
 			formulasLB.add(f);
-			System.out.println(f.toString());
 		}
 		
+		System.out.println("OK");
+		System.out.printf("Aplicando algoritmo Limited Backtracking...");
+
 		/* Tiempos */
 		double tiempoTotalLB = 0.0;
 		for (int i = 0; i < numFormulas; i++) {
 			long startTime = System.nanoTime();
 			LimitedBacktracking.limitedBT(formulasLB.get(i));
 			long endTime = System.nanoTime();
-			double duration = (endTime - startTime) / (1000.0);
+			double duration = (endTime - startTime) / (1000000.0);
 			tiempoTotalLB += duration;
 		}
 		
-		System.out.println();
-		System.out.println("Unit Propagation");
-		System.out.println("================");
+		System.out.println("OK");
+		System.out.printf("Generando formulas Horn-SAT...");
 		
 		/* Algoritmo Unit Propagation (UP) */
 		List<Formula> formulasUP = new LinkedList<Formula>();
@@ -148,22 +155,23 @@ public class SATSolverPruebas {
 			Formula f = generarFormulaAleatoria(variables, 
 					numClausulas,lista_variables,"UP");
 			formulasUP.add(f);
-			System.out.println(f.toString());
 		}
 		
+		System.out.println("OK");
+		System.out.printf("Aplicando algoritmo Unit Propagation...");
+
 		/* Tiempos */
 		double tiempoTotalUP = 0.0;
 		for (int i = 0; i < numFormulas; i++) {
 			long startTime = System.nanoTime();
-			UnitPropagation.unitPropagation(formulasLB.get(i));
+			UnitPropagation.unitPropagation(formulasUP.get(i));
 			long endTime = System.nanoTime();
-			double duration = (endTime - startTime) / (1000.0);
+			double duration = (endTime - startTime) / (1000000.0);
 			tiempoTotalUP += duration;
 		}
 		
-		System.out.println();
-		System.out.println("DPLL");
-		System.out.println("====");
+		System.out.println("OK");
+		System.out.printf("Generando formulas para SAT general...");
 		
 		/* Algoritmo DPLL */
 		List<Formula> formulasDPLL = new LinkedList<Formula>();
@@ -171,18 +179,21 @@ public class SATSolverPruebas {
 			Formula f = generarFormulaAleatoria(variables, 
 					numClausulas,lista_variables,"DPLL");
 			formulasDPLL.add(f);
-			System.out.println(f.toString());
 		}
 		
+		System.out.println("OK");
+		System.out.printf("Aplicando algoritmo DPLL...");
+
 		/* Tiempos */
 		double tiempoTotalDPLL = 0.0;
 		for (int i = 0; i < numFormulas; i++) {
 			long startTime = System.nanoTime();
-			DPLL.dpll(formulasLB.get(i));
+			DPLL.dpll(formulasDPLL.get(i));
 			long endTime = System.nanoTime();
-			double duration = (endTime - startTime) / (1000.0);
+			double duration = (endTime - startTime) / (1000000.0);
 			tiempoTotalDPLL += duration;
 		}
+		System.out.println("OK");
 		
 		/* Muestra los resultados finales */
 		System.out.println();
@@ -193,18 +204,17 @@ public class SATSolverPruebas {
 		System.out.println("Tiempo total LB: " + tiempoTotalLB + " ms");
 		System.out.println("Tiempo total UP: " + tiempoTotalUP + " ms");
 		System.out.println("Tiempo total DPLL: " + tiempoTotalDPLL + " ms");
+		System.out.println();
 	}
 	
 	private static HashSet<Variable> generarVariablesAleatorias(int numVariables) {
 		HashSet<Variable> variables = new HashSet<Variable>();
 		int vars = 0;
 		while (vars < numVariables) {
-			String nombre = generarNombreAleatorio(numVariables);
+			String nombre = "v" + vars;
 			Variable v = new Variable(nombre);
-			if (!esta(variables, v)) {
-				variables.add(v);
-				vars++;
-			}
+			variables.add(v);
+			vars++;
 		}
 		return variables;
 	}
@@ -222,7 +232,7 @@ public class SATSolverPruebas {
 	private static Clausula generarClausulaAleatoria(List<Variable> variables, String tipo) {
 		Clausula clausula = new Clausula();
 		Random gen = new Random();
-		int numLiterales = gen.nextInt(variables.size() - 2) + 2;
+		int numLiterales = gen.nextInt(variables.size() - 1) + 1;
 		int numAfirmados = 0;
 		
 		if (tipo.equals("LB")) {
@@ -246,25 +256,6 @@ public class SATSolverPruebas {
 			clausula.addLiteral(literal);
 		}
 		return clausula;
-	}
-	
-	private static String generarNombreAleatorio(int numVariables) {
-		String nombre = "v";
-		Random gen = new Random();
-		nombre = nombre + gen.nextInt(numVariables + 1);
-		return nombre;
-	}
-	
-	private static boolean esta(HashSet<Variable> variables, Variable var) {
-		boolean esta = false;
-		Iterator<Variable> iter = variables.iterator();
-		while (!esta && iter.hasNext()) {
-			Variable v = iter.next();
-			if (v.getNombre().equals(var.getNombre())) {
-				esta = true;
-			}
-		}
-		return esta;
 	}
 	
 }

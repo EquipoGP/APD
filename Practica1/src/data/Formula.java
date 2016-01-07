@@ -95,10 +95,11 @@ public class Formula {
 	@Override
 	public String toString() {
 		String resp = "";
-		for(Clausula c : clausulas){
+		for (int i = 0; i < clausulas.size() - 1; i++) {
+			Clausula c = clausulas.get(i);
 			resp = resp + c.toString() + " * ";
 		}
-		resp = resp.substring(0, resp.length() - 2);
+		resp = resp + clausulas.get(clausulas.size() - 1);
 		return resp.trim();
 	}
 }

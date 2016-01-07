@@ -22,7 +22,14 @@ public class UnitPropagation {
 	 * @param f formula CNF
 	 * @return true si es satsfacible, false en caso contrario
 	 */
-	public static boolean unitPropagation(Formula f){
+	public static boolean unitPropagation(Formula form){
+		
+		/* No modifica la variable form */
+		Formula f = new Formula(form.getVariables());
+		for (Clausula c : form.getClausulas()) {
+			f.addClausula(c);
+		}
+		
 		while(hayClausulasUnitarias(f)){
 			Clausula cl = encontrarUnitario(f);
 			Literal l = cl.getLiterales().get(0);
