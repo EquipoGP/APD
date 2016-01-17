@@ -12,8 +12,8 @@ public class SuffixTree {
 			/* printear menu */
 			System.out.println("MENU");
 			System.out.println("======================================");
-			System.out.println("1) Leer patron y texto y encontrar ocurrencias");
-			System.out.println("2) Leer patron y varios textos y encontrar ocurrencias");
+			System.out.println("1) String matching");
+			System.out.println("2) Substring");
 			System.out.println("3) Salir");
 			System.out.printf("$> ");
 			
