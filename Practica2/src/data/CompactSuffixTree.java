@@ -116,6 +116,7 @@ public class CompactSuffixTree {
 	private void compactar(String[] textos){
 		List<Nodo> grado2 = elemsGrado2();
 		
+		/* Elimina los nodos de grado 2 */
 		for(Nodo n : grado2){
 			Nodo hijo = n.getHijos().get(0);
 			Nodo padre = n.getPadre();
@@ -137,7 +138,12 @@ public class CompactSuffixTree {
 			if (label.length() >= log) {
 				
 				/* Reemplaza la etiqueta por los numeros de posicion */
-//				String componente1 = "" + pos(n) + depth(n);
+				int comp1 = pos(n) + depth(n);
+				String c1 = "" + comp1;
+				int comp2 = comp1 + label.length() - 1;
+				String c2 = "" + comp2;
+				String newLabel = "[" + comp1 + ".." + comp2 + "]";
+				n.setLabel(newLabel);
 			}
 			
 		}
@@ -207,6 +213,16 @@ public class CompactSuffixTree {
 		}
 		
 		return minEtiqueta;
+	}
+	
+	private int depth(Nodo nodo) {
+		Nodo actual = nodo.getPadre();
+		String pathlabel = actual.getLabel();
+		while (actual.getPadre() != null) {
+			actual = actual.getPadre();
+			pathlabel += actual.getLabel();
+		}
+		return pathlabel.length();
 	}
 	
 	@Override
