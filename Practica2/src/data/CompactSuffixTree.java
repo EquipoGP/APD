@@ -36,6 +36,10 @@ public class CompactSuffixTree {
 		compactar(textos);
 	}
 	
+	public Nodo getRaiz() {
+		return raiz;
+	}
+	
 	/**
 	 * 
 	 * @param textos
@@ -359,4 +363,5 @@ public class CompactSuffixTree {
 		}
 		return lista;
 	}
+	
 }
