@@ -9,6 +9,17 @@ import java.util.Set;
 
 public class CompactSuffixTree {
 	
+	/**
+	 * Para representar las etiquetas comprimidas se optado por:
+	 * 
+	 * 		(numTexto, posInicialOcurrencia, posFinalOcurrencia)
+	 * 
+	 * de esta forma el usuario puede observar facilmente donde 
+	 * se encuentra el match del patron en alguno de los textos
+	 * solicitados
+	 * 
+	 */
+	
 	private Nodo raiz;
 	private int alfabeto;
 	
@@ -17,6 +28,14 @@ public class CompactSuffixTree {
 		
 		suffixTree(textos);
 		compactar(textos);
+	}
+	
+	private int totalCaracteres(String[] textos) {
+		int numCaracteres = 0;
+		for (String s : textos) {
+			numCaracteres += s.length();
+		}
+		return numCaracteres;
 	}
 	
 	private int alfabeto(String[] textos){
@@ -110,10 +129,17 @@ public class CompactSuffixTree {
 			padre.setHijos(hijos);			
 		}
 		
+		/* Comprime las etiquetas largas */
 		List<Nodo> nodos = nodos();
-		int log = textos.length - alfabeto;
+		double log = Math.log(totalCaracteres(textos) - alfabeto);
 		for(Nodo n : nodos){
 			String label = n.getLabel();
+			if (label.length() >= log) {
+				
+				/* Reemplaza la etiqueta por los numeros de posicion */
+//				String componente1 = "" + pos(n) + depth(n);
+			}
+			
 		}
 	}
 	
@@ -153,6 +179,34 @@ public class CompactSuffixTree {
 			}
 		}
 		return nodos;
+	}
+	
+	private int pos(Nodo nodo) {
+		int minEtiqueta = Integer.MAX_VALUE;
+		int minTexto = Integer.MAX_VALUE;
+		List<Nodo> actuales = new LinkedList<Nodo>();
+		actuales.add(raiz);
+		
+		while(!actuales.isEmpty()){
+			Nodo n = actuales.remove(0);
+			
+			/* Comprueba minEtiqueta */
+			for (Map.Entry<Integer, Integer> entry : n.getTextos().entrySet()){
+				int texto = entry.getKey();
+				int etiqueta = entry.getValue();
+				
+				if (texto < minTexto && etiqueta < minEtiqueta) {
+					minTexto = texto;
+					minEtiqueta = etiqueta;
+				}
+			}
+			
+			if(n.getHijos() != null){
+				actuales.addAll(n.getHijos());
+			}
+		}
+		
+		return minEtiqueta;
 	}
 	
 	@Override
