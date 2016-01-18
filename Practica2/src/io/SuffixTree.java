@@ -2,6 +2,8 @@ package io;
 
 import java.util.Scanner;
 
+import data.CompactSuffixTree;
+
 public class SuffixTree {
 
 	public static void main(String[] args) {
@@ -20,14 +22,18 @@ public class SuffixTree {
 			opcion = in.nextInt();
 			in.nextLine();
 			
+			String patron;
+			String textos[];
 			switch(opcion){
 			case 1:
 				/* leer patron y texto */
 				System.out.printf("Introduce el patron: ");
-				String patron = in.nextLine();
+				patron = in.nextLine();
 				
 				System.out.printf("Introduce el texto: ");
 				String texto = in.nextLine();
+				textos = new String[1];
+				textos[0] = texto;
 				break;
 				
 			case 2:
@@ -38,14 +44,20 @@ public class SuffixTree {
 				System.out.printf("Introduce el numero de textos: ");
 				int n = in.nextInt();
 				in.nextLine();
-				String [] textos = new String[n];
+				textos = new String[n];
 				
 				for(int i = 0; i < n; i++){
 					System.out.printf("Introduce el texto: ");
 					textos[i] = in.nextLine();
 				}
 				break;
+				
+			default:
+				textos = new String[0];
 			}
+			
+			CompactSuffixTree cst = new CompactSuffixTree(textos);
+			System.out.println(cst.toString());
 		}
 		while(opcion != 3);
 		in.close();
