@@ -22,14 +22,25 @@ public class CompactSuffixTree {
 	
 	private Nodo raiz;
 	private int alfabeto;
+	private String[] textos;
 	
+	/**
+	 * 
+	 * @param textos
+	 */
 	public CompactSuffixTree(String[] textos){
 		alfabeto = alfabeto(textos);
+		this.textos = textos;
 		
 		suffixTree(textos);
 		compactar(textos);
 	}
 	
+	/**
+	 * 
+	 * @param textos
+	 * @return
+	 */
 	private int totalCaracteres(String[] textos) {
 		int numCaracteres = 0;
 		for (String s : textos) {
@@ -38,6 +49,11 @@ public class CompactSuffixTree {
 		return numCaracteres;
 	}
 	
+	/**
+	 * 
+	 * @param textos
+	 * @return
+	 */
 	private int alfabeto(String[] textos){
 		String t = "";
 		for(String txt : textos){
@@ -52,6 +68,10 @@ public class CompactSuffixTree {
 		return chars.size();
 	}
 	
+	/**
+	 * 
+	 * @param textos
+	 */
 	private void suffixTree(String[] textos){
 		raiz = new Nodo(null);
 		raiz.setLabel("R");
@@ -68,6 +88,12 @@ public class CompactSuffixTree {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param text
+	 * @param texto
+	 * @param posicion
+	 */
 	private void insertar(String text, int texto, int posicion){
 		Nodo inicio = raiz;
 		
@@ -113,6 +139,10 @@ public class CompactSuffixTree {
 		inicio.setHijos(hijos);
 	}
 	
+	/**
+	 * 
+	 * @param textos
+	 */
 	private void compactar(String[] textos){
 		List<Nodo> grado2 = elemsGrado2();
 		
@@ -140,13 +170,23 @@ public class CompactSuffixTree {
 				/* Reemplaza la etiqueta por los numeros de posicion */
 				int c1 = pos(n) + depth(n);
 				int c2 = c1 + label.length() - 1;
-				String newLabel = "[" + c1 + ".." + c2 + "]";
-				n.setLabel(newLabel);
+				int t = minTexto(n);
+				
+				Identificador id = n.getId();
+				id.setLabel(null);
+				
+				id.setNumTexto(t);
+				id.setPosInicio(c1);
+				id.setPosFinal(c2);
 			}
 			
 		}
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	private List<Nodo> nodos(){
 		List<Nodo> nodos = new LinkedList<Nodo>();
 		
@@ -166,6 +206,10 @@ public class CompactSuffixTree {
 		return nodos;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	private List<Nodo> elemsGrado2(){
 		List<Nodo> nodos = new LinkedList<Nodo>();
 		
@@ -185,6 +229,11 @@ public class CompactSuffixTree {
 		return nodos;
 	}
 	
+	/**
+	 * 
+	 * @param nodo
+	 * @return
+	 */
 	private int pos(Nodo nodo) {
 		int minEtiqueta = Integer.MAX_VALUE;
 		int minTexto = Integer.MAX_VALUE;
@@ -199,7 +248,7 @@ public class CompactSuffixTree {
 				int texto = entry.getKey();
 				int etiqueta = entry.getValue();
 				
-				if (texto < minTexto && etiqueta < minEtiqueta) {
+				if (texto < minTexto || (texto == minTexto && etiqueta < minEtiqueta)) {
 					minTexto = texto;
 					minEtiqueta = etiqueta;
 				}
@@ -213,6 +262,41 @@ public class CompactSuffixTree {
 		return minEtiqueta;
 	}
 	
+	/**
+	 * 
+	 * @param nodo
+	 * @return
+	 */
+	private int minTexto(Nodo nodo) {
+		int minTexto = Integer.MAX_VALUE;
+		List<Nodo> actuales = new LinkedList<Nodo>();
+		actuales.add(raiz);
+		
+		while(!actuales.isEmpty()){
+			Nodo n = actuales.remove(0);
+			
+			/* Comprueba minEtiqueta */
+			for (Map.Entry<Integer, Integer> entry : n.getTextos().entrySet()){
+				int texto = entry.getKey();
+				
+				if (texto < minTexto) {
+					minTexto = texto;
+				}
+			}
+			
+			if(n.getHijos() != null){
+				actuales.addAll(n.getHijos());
+			}
+		}
+		
+		return minTexto;
+	}
+	
+	/**
+	 * 
+	 * @param nodo
+	 * @return
+	 */
 	private int depth(Nodo nodo) {
 		Nodo actual = nodo.getPadre();
 		String pathlabel = actual.getLabel();
@@ -223,6 +307,9 @@ public class CompactSuffixTree {
 		return pathlabel.length();
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public String toString(){
 		List<String> lista = new LinkedList<String>();
@@ -239,8 +326,25 @@ public class CompactSuffixTree {
 		return out;
 	}
 	
+	/**
+	 * 
+	 * @param out
+	 * @param n
+	 * @param lista
+	 * @return
+	 */
 	private List<String> toString(String out, Nodo n, List<String> lista){
-		out = out + n.getLabel();
+		if(n.getId().esLabel()){
+			out = out + n.getLabel();
+		}
+		else{
+			int t = n.getId().getNumTexto();
+			int init = n.getId().getPosInicio();
+			int end = n.getId().getPosFinal();
+			
+			out = out + textos[t-1].substring(init-1, end-1);
+		}
+		
 		if(n.getHijos() == null){
 			Map<Integer, Integer> map = n.getTextos();
 			for (Map.Entry<Integer, Integer> entry : map.entrySet()){
