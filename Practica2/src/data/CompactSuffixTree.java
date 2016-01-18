@@ -1,7 +1,9 @@
 package data;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class CompactSuffixTree {
 	
@@ -22,12 +24,12 @@ public class CompactSuffixTree {
 			// cadenas
 			for(int j = 0; j < text.length(); j++){
 				String partial = text.substring(j, text.length());
-				insertar(partial);
+				insertar(partial, i+1, j+1);
 			}
 		}
 	}
 	
-	private void insertar(String text){
+	private void insertar(String text, int texto, int posicion){
 		Nodo inicio = raiz;
 		
 		for(int j = 0; j < text.length(); j++){	
@@ -56,7 +58,17 @@ public class CompactSuffixTree {
 		}
 		
 		Nodo n = new Nodo();
-		List<Nodo> hijos = new LinkedList<Nodo>();
+		Map<Integer, Integer> map = n.getTextos();
+		if(map == null){
+			map = new HashMap<Integer, Integer>();
+		}
+		map.put(texto, posicion);
+		n.setTextos(map);
+		
+		List<Nodo> hijos = inicio.getHijos();
+		if(hijos == null){
+			hijos = new LinkedList<Nodo>();
+		}
 		hijos.add(n);
 		inicio.setHijos(hijos);
 	}
@@ -80,6 +92,10 @@ public class CompactSuffixTree {
 	private List<String> toString(String out, Nodo n, List<String> lista){
 		out = out + n.getCaracter();
 		if(n.getHijos() == null){
+			Map<Integer, Integer> map = n.getTextos();
+			for (Map.Entry<Integer, Integer> entry : map.entrySet()){
+				out = out + " ("+ entry.getKey() + ", " + entry.getValue() + ")";
+			}
 			lista.add(out);
 		}
 		else if(!n.getHijos().isEmpty()){
