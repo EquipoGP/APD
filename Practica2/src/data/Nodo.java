@@ -5,28 +5,40 @@ import java.util.Map;
 
 public class Nodo {
 
-	private char caracter;
+	private String label;
+	
+	private Nodo padre;
 	private List<Nodo> hijos;
+	
 	private Map<Integer, Integer> texto_posicion;
 	
-	public Nodo() {
-		this.caracter = '$';
+	public Nodo(Nodo padre) {
+		this.padre = padre;
+		this.label = "$";
 		this.hijos = null;
 		this.texto_posicion = null;
 	}
 	
-	public Nodo(char caracter, List<Nodo> hijos) {
-		this.caracter = caracter;
+	public Nodo(String etiq, List<Nodo> hijos) {
+		this.label = etiq;
 		this.hijos = hijos;
 		this.texto_posicion = null;
 	}
 
-	public char getCaracter() {
-		return caracter;
+	public String getLabel() {
+		return label;
 	}
 
-	public void setCaracter(char caracter) {
-		this.caracter = caracter;
+	public void setLabel(String etiq) {
+		this.label = etiq;
+	}
+	
+	public Nodo getPadre() {
+		return padre;
+	}
+
+	public void setPadre(Nodo padre) {
+		this.padre = padre;
 	}
 
 	public List<Nodo> getHijos() {
@@ -43,6 +55,18 @@ public class Nodo {
 
 	public void setTextos(Map<Integer, Integer> textos) {
 		this.texto_posicion = textos;
+	}
+	
+	public int getGrado(){
+		int grado = 0;
+		if(this.padre != null){
+			grado++;
+		}
+		if(hijos != null && !hijos.isEmpty()){
+			grado = grado + hijos.size();
+		}
+		
+		return grado;
 	}
 
 }
