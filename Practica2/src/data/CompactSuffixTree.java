@@ -138,11 +138,9 @@ public class CompactSuffixTree {
 			if (label.length() >= log) {
 				
 				/* Reemplaza la etiqueta por los numeros de posicion */
-				int comp1 = pos(n) + depth(n);
-				String c1 = "" + comp1;
-				int comp2 = comp1 + label.length() - 1;
-				String c2 = "" + comp2;
-				String newLabel = "[" + comp1 + ".." + comp2 + "]";
+				int c1 = pos(n) + depth(n);
+				int c2 = c1 + label.length() - 1;
+				String newLabel = "[" + c1 + ".." + c2 + "]";
 				n.setLabel(newLabel);
 			}
 			
