@@ -1,10 +1,8 @@
 package data;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public class CompactSuffixTree {
@@ -128,11 +126,12 @@ public class CompactSuffixTree {
 		}
 		
 		Nodo n = new Nodo(inicio);
-		Map<Integer, Integer> map = n.getTextos();
+		List<Posicion> map = n.getTextos();
 		if(map == null){
-			map = new HashMap<Integer, Integer>();
+			map = new LinkedList<Posicion>();
 		}
-		map.put(texto, posicion);
+		System.out.println(text + ": " + texto + ", " + posicion);
+		map.add(new Posicion(texto, posicion));
 		n.setTextos(map);
 		
 		List<Nodo> hijos = inicio.getHijos();
@@ -267,9 +266,9 @@ public class CompactSuffixTree {
 			
 			/* Comprueba minEtiqueta */
 			if(n.getTextos() != null){
-				for (Map.Entry<Integer, Integer> entry : n.getTextos().entrySet()){
-					int texto = entry.getKey();
-					int etiqueta = entry.getValue();
+				for (Posicion p : n.getTextos()){
+					int texto = p.getTexto();
+					int etiqueta = p.getPosicion();
 					
 					if (texto < minTexto || (texto == minTexto && etiqueta < minEtiqueta)) {
 						minTexto = texto;
@@ -301,8 +300,8 @@ public class CompactSuffixTree {
 			
 			/* Comprueba minEtiqueta */
 			if(n.getTextos() != null){
-				for (Map.Entry<Integer, Integer> entry : n.getTextos().entrySet()){
-					int texto = entry.getKey();
+				for (Posicion p : n.getTextos()){
+					int texto = p.getTexto();
 					
 					if (texto < minTexto) {
 						minTexto = texto;
@@ -394,9 +393,11 @@ public class CompactSuffixTree {
 		}
 		
 		if(n.getHijos() == null){
-			Map<Integer, Integer> map = n.getTextos();
-			for (Map.Entry<Integer, Integer> entry : map.entrySet()){
-				out = out + " ("+ entry.getKey() + ", " + entry.getValue() + ")";
+			for (Posicion p : n.getTextos()){
+				int texto = p.getTexto();
+				int etiqueta = p.getPosicion();
+				out = out + " ("+ texto + ", " + etiqueta + ")";
+				
 			}
 			lista.add(out);
 		}

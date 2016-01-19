@@ -1,8 +1,9 @@
 package io;
 
+import java.util.List;
 import java.util.Scanner;
 
-import data.CompactSuffixTree;
+import algorithms.Wow;
 
 public class SuffixTree {
 
@@ -34,6 +35,11 @@ public class SuffixTree {
 				String texto = in.nextLine();
 				textos = new String[1];
 				textos[0] = texto;
+				
+				List<Integer> pos = Wow.stringMatching(textos, patron);
+				for(Integer p : pos){
+					System.out.println(p);
+				}
 				break;
 				
 			case 2:
@@ -56,8 +62,8 @@ public class SuffixTree {
 				textos = new String[0];
 			}
 			
-			CompactSuffixTree cst = new CompactSuffixTree(textos);
-			System.out.println(cst.toString());
+			//CompactSuffixTree cst = new CompactSuffixTree(textos);
+			//System.out.println(cst.toString());
 		}
 		while(opcion != 3);
 		in.close();

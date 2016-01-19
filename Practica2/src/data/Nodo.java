@@ -1,7 +1,6 @@
 package data;
 
 import java.util.List;
-import java.util.Map;
 
 public class Nodo {
 
@@ -10,7 +9,7 @@ public class Nodo {
 	private Nodo padre;
 	private List<Nodo> hijos;
 	
-	private Map<Integer, Integer> texto_posicion;
+	private List<Posicion> texto_posicion;
 	
 	public Nodo(Nodo padre) {
 		this.padre = padre;
@@ -54,11 +53,11 @@ public class Nodo {
 		this.hijos = hijos;
 	}
 	
-	public Map<Integer, Integer> getTextos() {
+	public List<Posicion> getTextos() {
 		return texto_posicion;
 	}
 
-	public void setTextos(Map<Integer, Integer> textos) {
+	public void setTextos(List<Posicion> textos) {
 		this.texto_posicion = textos;
 	}
 	
