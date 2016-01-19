@@ -161,18 +161,23 @@ public class CompactSuffixTree {
 			List<Nodo> hijos = padre.getHijos();
 			hijos.remove(n);
 			hijos.add(hijo);
-			padre.setHijos(hijos);			
+			padre.setHijos(hijos);
 		}
 		
 		/* Comprime las etiquetas largas */
 		List<Nodo> nodos = nodos();
 		double log = Math.log(totalCaracteres(textos) - alfabeto);
+		if(log < 1){
+			log = 2.0;
+		}
 		for(Nodo n : nodos){
 			String label = n.getLabel();
 			if (label.length() >= log) {
 				
 				/* Reemplaza la etiqueta por los numeros de posicion */
-				int c1 = pos(n) + depth(n);
+				int pos = pos(n);
+				int depth = depth(n);
+				int c1 = pos + depth;
 				int c2 = c1 + label.length() - 1;
 				int t = minTexto(n);
 				
@@ -242,19 +247,21 @@ public class CompactSuffixTree {
 		int minEtiqueta = Integer.MAX_VALUE;
 		int minTexto = Integer.MAX_VALUE;
 		List<Nodo> actuales = new LinkedList<Nodo>();
-		actuales.add(raiz);
+		actuales.add(nodo);
 		
 		while(!actuales.isEmpty()){
 			Nodo n = actuales.remove(0);
 			
 			/* Comprueba minEtiqueta */
-			for (Map.Entry<Integer, Integer> entry : n.getTextos().entrySet()){
-				int texto = entry.getKey();
-				int etiqueta = entry.getValue();
-				
-				if (texto < minTexto || (texto == minTexto && etiqueta < minEtiqueta)) {
-					minTexto = texto;
-					minEtiqueta = etiqueta;
+			if(n.getTextos() != null){
+				for (Map.Entry<Integer, Integer> entry : n.getTextos().entrySet()){
+					int texto = entry.getKey();
+					int etiqueta = entry.getValue();
+					
+					if (texto < minTexto || (texto == minTexto && etiqueta < minEtiqueta)) {
+						minTexto = texto;
+						minEtiqueta = etiqueta;
+					}
 				}
 			}
 			
@@ -274,17 +281,19 @@ public class CompactSuffixTree {
 	private int minTexto(Nodo nodo) {
 		int minTexto = Integer.MAX_VALUE;
 		List<Nodo> actuales = new LinkedList<Nodo>();
-		actuales.add(raiz);
+		actuales.add(nodo);
 		
 		while(!actuales.isEmpty()){
 			Nodo n = actuales.remove(0);
 			
 			/* Comprueba minEtiqueta */
-			for (Map.Entry<Integer, Integer> entry : n.getTextos().entrySet()){
-				int texto = entry.getKey();
-				
-				if (texto < minTexto) {
-					minTexto = texto;
+			if(n.getTextos() != null){
+				for (Map.Entry<Integer, Integer> entry : n.getTextos().entrySet()){
+					int texto = entry.getKey();
+					
+					if (texto < minTexto) {
+						minTexto = texto;
+					}
 				}
 			}
 			
@@ -303,10 +312,31 @@ public class CompactSuffixTree {
 	 */
 	private int depth(Nodo nodo) {
 		Nodo actual = nodo.getPadre();
-		String pathlabel = actual.getLabel();
+		if(actual == null){
+			return 0;
+		}
+		
+		String pathlabel = "";
+		
+		if(actual.getId().esLabel()){
+			pathlabel = actual.getLabel();
+		}
+		else{
+			pathlabel = textos[actual.getId().getNumTexto() - 1]
+					.substring(actual.getId().getPosInicio() - 1, 
+							actual.getId().getPosFinal() - 1);
+		}
+		
 		while (actual.getPadre() != null) {
 			actual = actual.getPadre();
-			pathlabel += actual.getLabel();
+			if(actual.getId().esLabel()){
+				pathlabel += actual.getLabel();
+			}
+			else{
+				pathlabel += textos[actual.getId().getNumTexto() - 1]
+						.substring(actual.getId().getPosInicio() - 1, 
+								actual.getId().getPosFinal() - 1);
+			}
 		}
 		return pathlabel.length();
 	}
