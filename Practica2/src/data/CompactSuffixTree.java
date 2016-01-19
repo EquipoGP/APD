@@ -188,12 +188,6 @@ public class CompactSuffixTree {
 				int c2 = c1 + label.length() - 1;
 				int t = minTexto(n);
 				
-				System.out.println("POS: " + pos);
-				System.out.println("DEPTH: " + depth);
-				System.out.println("C1: " + c1);
-				System.out.println("C2: " + c2);
-				System.out.println("LABEL: " + label);
-				
 				Identificador id = n.getId();
 				id.setLabel(null);
 				
@@ -343,7 +337,7 @@ public class CompactSuffixTree {
 		else{
 			pathlabel = textos[actual.getId().getNumTexto() - 1]
 					.substring(actual.getId().getPosInicio() - 1, 
-							actual.getId().getPosFinal() - 1);
+							actual.getId().getPosFinal());
 		}
 		
 		while (actual.getPadre() != null &&
@@ -355,7 +349,7 @@ public class CompactSuffixTree {
 			else{
 				pathlabel += textos[actual.getId().getNumTexto() - 1]
 						.substring(actual.getId().getPosInicio() - 1, 
-								actual.getId().getPosFinal() - 1);
+								actual.getId().getPosFinal());
 			}
 		}
 		return pathlabel.length();
