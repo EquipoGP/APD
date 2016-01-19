@@ -69,9 +69,16 @@ public class Matching {
 					String ee = etiq.substring(0, min);
 
 					if (pp.equals(ee)) {
+						
+						// el patron coincide con el texto
 						inicio = n;
 						p = p.substring(min);
 						break;
+					}
+					else {
+						
+						// el patron no coincide
+						seguir = false;
 					}
 				}
 			}

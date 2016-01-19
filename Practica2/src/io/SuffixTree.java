@@ -43,11 +43,16 @@ public class SuffixTree {
 					List<Posicion> pos = Matching.substringMatching(textos, patron);
 					
 					/* Muestra la respuesta para String Matching */
-					System.out.print("El patron '" + patron + "' aparece en el"
-							+ " texto en las posiciones: ");
-					System.out.print(pos.get(0).getPosicion());
-					for (int i = 1; i < pos.size(); i++) {
-						System.out.print(", " + pos.get(i).getPosicion());
+					if (pos.isEmpty()) {
+						System.out.println("El patron '" + patron + "' no aparece en el texto.");
+					}
+					else {
+						System.out.print("El patron '" + patron + "' aparece en el"
+								+ " texto en las posiciones: ");
+						System.out.print(pos.get(0).getPosicion());
+						for (int i = 1; i < pos.size(); i++) {
+							System.out.print(", " + pos.get(i).getPosicion());
+						}
 					}
 					System.out.println();
 				}
@@ -74,20 +79,25 @@ public class SuffixTree {
 					List<Posicion> pos = Matching.substringMatching(textos, patron);
 					
 					/* Muestra la respuesta para substring */
-					System.out.print("El patron '" + patron + "' aparece en los"
-							+ " textos: ");
-					
-					List<Integer> textosPatron = new LinkedList<Integer>();
-					for (int i = 0; i < pos.size(); i++) {
-						int nuevoTexto = pos.get(i).getTexto();
-						if (!textosPatron.contains(nuevoTexto)) {
-							textosPatron.add(nuevoTexto);
-						}
+					if (pos.isEmpty()) {
+						System.out.println("El patron '" + patron + "' no aparece en ningun texto.");
 					}
-					
-					System.out.print(textosPatron.get(0));
-					for (int i = 1; i < textosPatron.size(); i++) {
-						System.out.print(", " + textosPatron.get(i));
+					else {
+						System.out.print("El patron '" + patron + "' aparece en los"
+								+ " textos: ");
+						
+						List<Integer> textosPatron = new LinkedList<Integer>();
+						for (int i = 0; i < pos.size(); i++) {
+							int nuevoTexto = pos.get(i).getTexto();
+							if (!textosPatron.contains(nuevoTexto)) {
+								textosPatron.add(nuevoTexto);
+							}
+						}
+						
+						System.out.print(textosPatron.get(0));
+						for (int i = 1; i < textosPatron.size(); i++) {
+							System.out.print(", " + textosPatron.get(i));
+						}
 					}
 					System.out.println();
 				}
