@@ -19,6 +19,9 @@ public class Matching {
 
 		while (seguir) {
 			List<Nodo> hijos = inicio.getHijos();
+			if (hijos == null) {
+				hijos = new LinkedList<Nodo>();
+			}
 
 			if (p.isEmpty()) {
 				seguir = false;
