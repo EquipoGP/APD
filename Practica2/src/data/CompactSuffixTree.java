@@ -172,6 +172,13 @@ public class CompactSuffixTree {
 		}
 		for(Nodo n : nodos){
 			String label = n.getLabel();
+			
+			/* Elimina el caracter $ de una etiqueta */
+			if (label.charAt(label.length()-1) == '$') {
+				label = label.substring(0,label.length()-1);
+				n.setLabel(label);
+			}
+			
 			if (label.length() >= log) {
 				
 				/* Reemplaza la etiqueta por los numeros de posicion */
@@ -180,6 +187,12 @@ public class CompactSuffixTree {
 				int c1 = pos + depth;
 				int c2 = c1 + label.length() - 1;
 				int t = minTexto(n);
+				
+				System.out.println("POS: " + pos);
+				System.out.println("DEPTH: " + depth);
+				System.out.println("C1: " + c1);
+				System.out.println("C2: " + c2);
+				System.out.println("LABEL: " + label);
 				
 				Identificador id = n.getId();
 				id.setLabel(null);
@@ -247,7 +260,13 @@ public class CompactSuffixTree {
 		int minEtiqueta = Integer.MAX_VALUE;
 		int minTexto = Integer.MAX_VALUE;
 		List<Nodo> actuales = new LinkedList<Nodo>();
-		actuales.add(nodo);
+		
+		if (nodo.getHijos() == null) {
+			actuales.add(nodo);
+		}
+		else {
+			actuales.addAll(nodo.getHijos());
+		}
 		
 		while(!actuales.isEmpty()){
 			Nodo n = actuales.remove(0);
@@ -312,7 +331,7 @@ public class CompactSuffixTree {
 	 */
 	private int depth(Nodo nodo) {
 		Nodo actual = nodo.getPadre();
-		if(actual == null){
+		if(actual == null || actual.equals(raiz)){
 			return 0;
 		}
 		
@@ -327,7 +346,8 @@ public class CompactSuffixTree {
 							actual.getId().getPosFinal() - 1);
 		}
 		
-		while (actual.getPadre() != null) {
+		while (actual.getPadre() != null &&
+				!actual.getPadre().equals(raiz)) {
 			actual = actual.getPadre();
 			if(actual.getId().esLabel()){
 				pathlabel += actual.getLabel();
@@ -376,7 +396,7 @@ public class CompactSuffixTree {
 			int init = n.getId().getPosInicio();
 			int end = n.getId().getPosFinal();
 			
-			out = out + textos[t-1].substring(init-1, end-1);
+			out = out + textos[t-1].substring(init-1, end);
 		}
 		
 		if(n.getHijos() == null){
