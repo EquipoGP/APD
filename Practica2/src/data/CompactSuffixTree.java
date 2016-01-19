@@ -130,7 +130,6 @@ public class CompactSuffixTree {
 		if(map == null){
 			map = new LinkedList<Posicion>();
 		}
-		System.out.println(text + ": " + texto + ", " + posicion);
 		map.add(new Posicion(texto, posicion));
 		n.setTextos(map);
 		

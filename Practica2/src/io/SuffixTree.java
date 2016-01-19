@@ -3,7 +3,8 @@ package io;
 import java.util.List;
 import java.util.Scanner;
 
-import algorithms.Wow;
+import algorithms.Matching;
+import data.Posicion;
 
 public class SuffixTree {
 
@@ -23,7 +24,7 @@ public class SuffixTree {
 			opcion = in.nextInt();
 			in.nextLine();
 			
-			String patron;
+			String patron = null;
 			String textos[];
 			switch(opcion){
 			case 1:
@@ -35,11 +36,6 @@ public class SuffixTree {
 				String texto = in.nextLine();
 				textos = new String[1];
 				textos[0] = texto;
-				
-				List<Integer> pos = Wow.stringMatching(textos, patron);
-				for(Integer p : pos){
-					System.out.println(p);
-				}
 				break;
 				
 			case 2:
@@ -62,8 +58,12 @@ public class SuffixTree {
 				textos = new String[0];
 			}
 			
-			//CompactSuffixTree cst = new CompactSuffixTree(textos);
-			//System.out.println(cst.toString());
+			if(patron != null){
+				List<Posicion> pos = Matching.substringMatching(textos, patron);
+				for(Posicion p : pos){
+					System.out.println(p.getTexto() + ", " + p.getPosicion());
+				}
+			}
 		}
 		while(opcion != 3);
 		in.close();
