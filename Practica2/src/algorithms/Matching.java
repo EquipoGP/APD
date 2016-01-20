@@ -1,3 +1,8 @@
+/*
+ * Patricia Lazaro Tello (554309)
+ * Alejandro Royo Amondarain (560285)
+ */
+
 package algorithms;
 
 import java.util.LinkedList;
@@ -8,8 +13,18 @@ import data.Nodo;
 import data.Posicion;
 
 public class Matching {
+	/*
+	 * Clase que contiene los algoritmos de StringMatching y SubString
+	 */
 
+	/**
+	 * @param textos textos sobre los que buscar el patron
+	 * @param patron patron que encontrar en los textos
+	 * @return una lista con las posiciones en las que se encuentra el patron
+	 * en los textos
+	 */
 	public static List<Posicion> substringMatching(String[] textos, String patron) {
+		/* inicializacion */
 		List<Posicion> posiciones = new LinkedList<Posicion>();
 		CompactSuffixTree T = new CompactSuffixTree(textos);
 
@@ -24,32 +39,39 @@ public class Matching {
 			}
 
 			if (p.isEmpty()) {
+				/* patron vacio: se ha encontrado la totalidad del patron */
 				seguir = false;
 				if (inicio.getTextos() != null) {
 					for (Posicion pos : inicio.getTextos()) {
+						// nueva posicion del patron
 						int texto = pos.getTexto();
 						int etiqueta = pos.getPosicion();
 						posiciones.add(new Posicion(texto, etiqueta));
 					}
-				} else {
-					List<Nodo> actual = hijos;
-					while(!actual.isEmpty()) {
-						Nodo n = actual.remove(0);
-						if (n.getTextos() != null) {
-							for (Posicion pos : n.getTextos()) {
-								int texto = pos.getTexto();
-								int etiqueta = pos.getPosicion();
-								posiciones.add(new Posicion(texto, etiqueta));
-							}
+				}
+				
+				/* mirar los hijos */
+				List<Nodo> actual = hijos;
+				while(!actual.isEmpty()) {
+					Nodo n = actual.remove(0);
+					if (n.getTextos() != null) {
+						for (Posicion pos : n.getTextos()) {
+							// nueva posicion del patron
+							int texto = pos.getTexto();
+							int etiqueta = pos.getPosicion();
+							posiciones.add(new Posicion(texto, etiqueta));
 						}
-						
-						if(n.getHijos() != null){
-							actual.addAll(n.getHijos());
-						}
+					}
+					
+					/* agregar hijos */
+					if(n.getHijos() != null){
+						actual.addAll(n.getHijos());
 					}
 				}
 			} else {
+				/* todavia no se ha encontrado la totalidad del patorn */
 				for (Nodo n : hijos) {
+					// obtener etiqueta
 					String etiq = "";
 					if (n.getId().esLabel()) {
 						etiq = n.getLabel();
@@ -68,22 +90,20 @@ public class Matching {
 					String pp = p.substring(0, min);
 					String ee = etiq.substring(0, min);
 
+					// matchear etiqueta y patron
 					if (pp.equals(ee)) {
-						
 						// el patron coincide con el texto
 						inicio = n;
 						p = p.substring(min);
-						break;
+						break;	// salir por el hijo que coincide
 					}
 					else {
-						
 						// el patron no coincide
 						seguir = false;
 					}
 				}
 			}
 		}
-
 		return posiciones;
 	}
 
