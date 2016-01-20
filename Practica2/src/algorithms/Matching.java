@@ -18,15 +18,14 @@ public class Matching {
 	 */
 
 	/**
-	 * @param textos textos sobre los que buscar el patron
 	 * @param patron patron que encontrar en los textos
 	 * @return una lista con las posiciones en las que se encuentra el patron
 	 * en los textos
 	 */
-	public static List<Posicion> substringMatching(String[] textos, String patron) {
+	public static List<Posicion> substringMatching(CompactSuffixTree T, String patron) {
 		/* inicializacion */
 		List<Posicion> posiciones = new LinkedList<Posicion>();
-		CompactSuffixTree T = new CompactSuffixTree(textos);
+		String[] textos = T.getTextos();
 
 		String p = patron;
 		Nodo inicio = T.getRaiz();
@@ -95,6 +94,7 @@ public class Matching {
 						// el patron coincide con el texto
 						inicio = n;
 						p = p.substring(min);
+						seguir = true;
 						break;	// salir por el hijo que coincide
 					}
 					else {

@@ -52,6 +52,13 @@ public class CompactSuffixTree {
 	}
 	
 	/**
+	 * @return textos contenidos en el arbol
+	 */
+	public String[] getTextos(){
+		return textos;
+	}
+	
+	/**
 	 * @param textos textos sobre los que crear el arbol de sufijos compacto
 	 * @return numero de caracteres total de los textos
 	 */
@@ -141,8 +148,21 @@ public class CompactSuffixTree {
 			}
 		}
 		
-		// crear un nuevo nodo
-		Nodo n = new Nodo(inicio);
+		Nodo n = null;
+		if(inicio.getHijos() != null){
+			// coger el nodo
+			for(Nodo nn : inicio.getHijos()){
+				if(nn.getLabel().equals("$")){
+					n = nn;
+					break;
+				}
+			}
+		}
+		if(n == null){
+			// crear un nuevo nodo
+			n = new Nodo(inicio);
+		}
+		
 		List<Posicion> map = n.getTextos();
 		if(map == null){
 			map = new LinkedList<Posicion>();
@@ -178,6 +198,12 @@ public class CompactSuffixTree {
 			hijos.remove(n);
 			hijos.add(hijo);
 			padre.setHijos(hijos);
+			
+			/* prevencion memory leak */
+			n.setHijos(null);
+			n.setPadre(null);
+			n.setId(null);
+			n.setTextos(null);
 		}
 		
 		/* Comprime las etiquetas largas */

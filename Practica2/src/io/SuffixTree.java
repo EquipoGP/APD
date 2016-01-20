@@ -1,3 +1,8 @@
+/*
+ * Patricia Lazaro Tello (554309)
+ * Alejandro Royo Amondarain (560285)
+ */
+
 package io;
 
 import java.util.LinkedList;
@@ -5,10 +10,17 @@ import java.util.List;
 import java.util.Scanner;
 
 import algorithms.Matching;
+import data.CompactSuffixTree;
 import data.Posicion;
 
 public class SuffixTree {
+	/*
+	 * Clase principal para la interaccion con el usuario
+	 */
 
+	/**
+	 * @param args sin argumentos
+	 */
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
 		int opcion = 0;
@@ -40,7 +52,8 @@ public class SuffixTree {
 				
 				/* Ejecuta el algoritmo para String Matching */
 				if(patron != null){
-					List<Posicion> pos = Matching.substringMatching(textos, patron);
+					CompactSuffixTree T = new CompactSuffixTree(textos);
+					List<Posicion> pos = Matching.substringMatching(T, patron);
 					
 					/* Muestra la respuesta para String Matching */
 					if (pos.isEmpty()) {
@@ -76,7 +89,8 @@ public class SuffixTree {
 				
 				/* Ejecuta el algoritmo para substring */
 				if(patron != null){
-					List<Posicion> pos = Matching.substringMatching(textos, patron);
+					CompactSuffixTree T = new CompactSuffixTree(textos);
+					List<Posicion> pos = Matching.substringMatching(T, patron);
 					
 					/* Muestra la respuesta para substring */
 					if (pos.isEmpty()) {
