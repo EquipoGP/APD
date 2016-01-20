@@ -43,9 +43,7 @@ public class Matching {
 				if (inicio.getTextos() != null) {
 					for (Posicion pos : inicio.getTextos()) {
 						// nueva posicion del patron
-						int texto = pos.getTexto();
-						int etiqueta = pos.getPosicion();
-						posiciones.add(new Posicion(texto, etiqueta));
+						posiciones.add(pos);
 					}
 				}
 				
@@ -56,9 +54,7 @@ public class Matching {
 					if (n.getTextos() != null) {
 						for (Posicion pos : n.getTextos()) {
 							// nueva posicion del patron
-							int texto = pos.getTexto();
-							int etiqueta = pos.getPosicion();
-							posiciones.add(new Posicion(texto, etiqueta));
+							posiciones.add(pos);
 						}
 					}
 					
