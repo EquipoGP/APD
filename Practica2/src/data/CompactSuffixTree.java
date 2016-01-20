@@ -1,3 +1,8 @@
+/*
+ * Patricia Lazaro Tello (554309)
+ * Alejandro Royo Amondarain (560285)
+ */
+
 package data;
 
 import java.util.HashSet;
@@ -6,6 +11,10 @@ import java.util.List;
 import java.util.Set;
 
 public class CompactSuffixTree {
+	
+	/*
+	 * Clase para representar el arbol de sufijos compacto
+	 */
 	
 	/**
 	 * Para representar las etiquetas comprimidas se optado por:
@@ -18,13 +27,14 @@ public class CompactSuffixTree {
 	 * 
 	 */
 	
+	/* atributos privados */
 	private Nodo raiz;
 	private int alfabeto;
 	private String[] textos;
 	
 	/**
-	 * 
-	 * @param textos
+	 * Crea un arbol de sufijos compacto a partir de los textos de entrada
+	 * @param textos textos de entrada
 	 */
 	public CompactSuffixTree(String[] textos){
 		alfabeto = alfabeto(textos);
@@ -34,14 +44,16 @@ public class CompactSuffixTree {
 		compactar(textos);
 	}
 	
+	/**
+	 * @return nodo raiz del arbol
+	 */
 	public Nodo getRaiz() {
 		return raiz;
 	}
 	
 	/**
-	 * 
-	 * @param textos
-	 * @return
+	 * @param textos textos sobre los que crear el arbol de sufijos compacto
+	 * @return numero de caracteres total de los textos
 	 */
 	private int totalCaracteres(String[] textos) {
 		int numCaracteres = 0;
@@ -52,9 +64,8 @@ public class CompactSuffixTree {
 	}
 	
 	/**
-	 * 
-	 * @param textos
-	 * @return
+	 * @param textos textos sobre los que crear el arbol de sufijos compacto
+	 * @return numero de caracteres distintos en el texto
 	 */
 	private int alfabeto(String[] textos){
 		String t = "";
@@ -71,10 +82,11 @@ public class CompactSuffixTree {
 	}
 	
 	/**
-	 * 
-	 * @param textos
+	 * Crea un arbol de sufijos (sin compactar)
+	 * @param textos textos sobre los que crear el arbol de sufijos
 	 */
 	private void suffixTree(String[] textos){
+		/* creacion del nodo raiz */
 		raiz = new Nodo(null);
 		raiz.setLabel("R");
 		raiz.setHijos(new LinkedList<Nodo>());
@@ -82,7 +94,7 @@ public class CompactSuffixTree {
 		for(int i = 0; i < textos.length; i++){
 			String text = textos[i];
 			
-			// cadenas
+			// obtener sufijos de los textos
 			for(int j = 0; j < text.length(); j++){
 				String partial = text.substring(j, text.length());
 				insertar(partial, i+1, j+1);
@@ -91,16 +103,18 @@ public class CompactSuffixTree {
 	}
 	
 	/**
-	 * 
-	 * @param text
-	 * @param texto
-	 * @param posicion
+	 * Inserta un texto @param text en el arbol de sufijos sin compactar
+	 * @param text texto a insertar
+	 * @param texto texto en que se encuentra el sufijo
+	 * @param posicion posicion en que se encuentra el sufijo dentro de
+	 * @param texto.
 	 */
 	private void insertar(String text, int texto, int posicion){
 		Nodo inicio = raiz;
 		
-		for(int j = 0; j < text.length(); j++){	
+		for(int j = 0; j < text.length(); j++){
 			Nodo x = null;
+			// buscar texto en el arbol
 			if(inicio.getHijos() != null && !inicio.getHijos().isEmpty()){
 				for(Nodo n : inicio.getHijos()){
 					if(n.getLabel().equals("" + text.charAt(j))){
@@ -111,9 +125,11 @@ public class CompactSuffixTree {
 			}
 			
 			if(x != null){
+				// la letra ya se encuentra en el arbol
 				inicio = x;
 			}
 			else{
+				// la letra no se encuentra en el arbol
 				Nodo n = new Nodo("" + text.charAt(j), new LinkedList<Nodo>());
 				n.setPadre(inicio);
 				
@@ -125,6 +141,7 @@ public class CompactSuffixTree {
 			}
 		}
 		
+		// crear un nuevo nodo
 		Nodo n = new Nodo(inicio);
 		List<Posicion> map = n.getTextos();
 		if(map == null){
@@ -142,10 +159,11 @@ public class CompactSuffixTree {
 	}
 	
 	/**
-	 * 
-	 * @param textos
+	 * Realiza la compactacion del arbol
+	 * @param textos textos sobre los que crear el arbol de sufijos compacto
 	 */
 	private void compactar(String[] textos){
+		// obtiene los nodos de grado 2
 		List<Nodo> grado2 = elemsGrado2();
 		
 		/* Elimina los nodos de grado 2 */
@@ -178,7 +196,6 @@ public class CompactSuffixTree {
 			}
 			
 			if (label.length() >= log) {
-				
 				/* Reemplaza la etiqueta por los numeros de posicion */
 				int pos = pos(n);
 				int depth = depth(n);
@@ -198,8 +215,7 @@ public class CompactSuffixTree {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * @return lita de todos los nodos (excepto raiz)
 	 */
 	private List<Nodo> nodos(){
 		List<Nodo> nodos = new LinkedList<Nodo>();
@@ -207,6 +223,7 @@ public class CompactSuffixTree {
 		List<Nodo> actuales = new LinkedList<Nodo>();
 		actuales.add(raiz);
 		
+		// recorre el arbol
 		while(!actuales.isEmpty()){
 			Nodo n = actuales.remove(0);
 			if(!nodos.contains(n)){
@@ -221,8 +238,7 @@ public class CompactSuffixTree {
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * @return nodos de grado 2
 	 */
 	private List<Nodo> elemsGrado2(){
 		List<Nodo> nodos = new LinkedList<Nodo>();
@@ -244,9 +260,8 @@ public class CompactSuffixTree {
 	}
 	
 	/**
-	 * 
-	 * @param nodo
-	 * @return
+	 * @param nodo nodo sobre el que calcular pos
+	 * @return minima etiqueta de las hojas del subarbol de raiz @param nodo
 	 */
 	private int pos(Nodo nodo) {
 		int minEtiqueta = Integer.MAX_VALUE;
@@ -285,9 +300,9 @@ public class CompactSuffixTree {
 	}
 	
 	/**
-	 * 
-	 * @param nodo
-	 * @return
+	 * @param nodo nodo sobre el que calcular minTexto
+	 * @return primer texto en el que aparece el patron que 
+	 * comienza por @param nodo
 	 */
 	private int minTexto(Nodo nodo) {
 		int minTexto = Integer.MAX_VALUE;
@@ -317,9 +332,10 @@ public class CompactSuffixTree {
 	}
 	
 	/**
-	 * 
-	 * @param nodo
-	 * @return
+	 * @param nodo nodo sobre el que calcular depth
+	 * @return longitud del pathlabel (concatenacion 
+	 * de etiquetas de los nodos que hay entre 
+	 * @param nodo y la raiz) de un nodo
 	 */
 	private int depth(Nodo nodo) {
 		Nodo actual = nodo.getPadre();
@@ -353,9 +369,6 @@ public class CompactSuffixTree {
 		return pathlabel.length();
 	}
 	
-	/**
-	 * 
-	 */
 	@Override
 	public String toString(){
 		List<String> lista = new LinkedList<String>();
@@ -373,11 +386,10 @@ public class CompactSuffixTree {
 	}
 	
 	/**
-	 * 
-	 * @param out
-	 * @param n
-	 * @param lista
-	 * @return
+	 * @param out almacena resultados intermedios
+	 * @param n nodo que visitar
+	 * @param lista lista donde almacenar el resultado final
+	 * @return lista de los sufijos del arbol
 	 */
 	private List<String> toString(String out, Nodo n, List<String> lista){
 		if(n.getId().esLabel()){
@@ -392,6 +404,7 @@ public class CompactSuffixTree {
 		}
 		
 		if(n.getHijos() == null){
+			// estamos en nodo hoja
 			for (Posicion p : n.getTextos()){
 				int texto = p.getTexto();
 				int etiqueta = p.getPosicion();
