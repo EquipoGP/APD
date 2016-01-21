@@ -129,5 +129,15 @@ public class Nodo {
 		
 		return grado;
 	}
+	
+	/**
+	 * Destruye el nodo
+	 */
+	public void destruir(){
+		setHijos(null);
+		setPadre(null);
+		setId(null);
+		setTextos(null);
+	}
 
 }

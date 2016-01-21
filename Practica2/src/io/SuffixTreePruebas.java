@@ -210,6 +210,8 @@ public class SuffixTreePruebas {
 			
 			numInvalidos++;
 			miliInvalidos += (end - begin);
+			
+			T.destruir();
 		}
 		System.out.println(" Hecho");
 	}
