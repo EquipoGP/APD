@@ -38,17 +38,14 @@ public class Matching {
 			}
 
 			if (p.isEmpty()) {
+				System.out.println("Patron encontrado");
 				/* patron vacio: se ha encontrado la totalidad del patron */
 				seguir = false;
-				if (inicio.getTextos() != null) {
-					for (Posicion pos : inicio.getTextos()) {
-						// nueva posicion del patron
-						posiciones.add(pos);
-					}
-				}
 				
-				/* mirar los hijos */
-				List<Nodo> actual = hijos;
+				List<Nodo> actual = new LinkedList<Nodo>();
+				actual.add(inicio);
+				actual.addAll(hijos);
+				
 				while(!actual.isEmpty()) {
 					Nodo n = actual.remove(0);
 					if (n.getTextos() != null) {

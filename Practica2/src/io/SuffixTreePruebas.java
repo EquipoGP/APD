@@ -24,7 +24,7 @@ public class SuffixTreePruebas {
 	 * Clase para las pruebas del arbol de sufijos compacto
 	 */
 
-	private static final int MAX_PATRON = 10;
+	private static final int MAX_PATRON = 100;
 	private static final int MAX_CHARS = 10000000;
 	private static final int MAX_TEXTOS = 50;
 
@@ -125,7 +125,7 @@ public class SuffixTreePruebas {
 			// patron valido
 			String t = textos.get(r.nextInt(textos.size()));
 			int inicio = r.nextInt(t.length() / 2);
-			int fin = 1 + r.nextInt(Math.min((t.length() / 4), MAX_PATRON)) + inicio;
+			int fin = 1 + r.nextInt(Math.min((t.length() / 2), MAX_PATRON)) + inicio;
 			patronValido = t.substring(inicio, fin);
 
 			// patron invalido
