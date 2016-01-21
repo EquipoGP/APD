@@ -459,6 +459,11 @@ public class CompactSuffixTree {
 			}
 			n.destruir();
 		}
+		
+		for(int i = 0; i < textos.length; i++){
+			textos[i] = null;
+		}
+		this.textos = null;
 	}
 	
 }

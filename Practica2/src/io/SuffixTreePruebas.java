@@ -25,8 +25,8 @@ public class SuffixTreePruebas {
 	 */
 
 	private static final int MAX_PATRON = 100;
-	private static final int MAX_CHARS = 15000;
-	private static final int MAX_TEXTOS = 1500;
+	private static final int MAX_CHARS = 1500;
+	private static final int MAX_TEXTOS = 50;
 	
 	private static int numValidos, numInvalidos, numTrees;
 	private static long miliValidos, miliInvalidos, miliTrees;
@@ -129,7 +129,6 @@ public class SuffixTreePruebas {
 
 		System.out.printf("\tTrabajando...");
 		while (!textosTotal.isEmpty()) {
-			CompactSuffixTree T = null;
 			List<String> textos = new LinkedList<String>();
 
 			int num_elems = 0;
@@ -143,77 +142,82 @@ public class SuffixTreePruebas {
 				textos.add(textosTotal.remove(0));
 			}
 
-			Set<Character> alfabeto = alfabeto(textos);
-
-			String patronValido = "";
-			String patronInvalido = "";
-
-			Random r = new Random();
-
-			// patron valido
-			String t = textos.get(r.nextInt(textos.size()));
-			int inicio = r.nextInt(t.length() / 2);
-			int fin = 1 + r.nextInt(Math.min((t.length() / 2), MAX_PATRON)) + inicio;
-			patronValido = t.substring(inicio, fin);
-
-			// patron invalido
-			for (char c = 65; c < 123; c++) {
-				if (c == '$') {
-					; // caracter invalido en patron
-				}
-				if (!alfabeto.contains(c)) {
-					patronInvalido = patronInvalido + c;
-
-					// salir con probabilidad creciente cuanto mas larga sea la
-					// cadena
-					double probabilidad = 1.0 / (double) patronInvalido.length();
-					if (r.nextDouble() > probabilidad) {
-						break;
-					}
-				}
-			}
-
-			// cambiar tipo de los textos
-			String[] txt = new String[textos.size()];
-			txt = textos.toArray(txt);
-
-			long begin = System.nanoTime();
-			T = new CompactSuffixTree(txt);
-			long end = System.nanoTime();
-			
-			numTrees++;
-			miliTrees += (end - begin);
-			
-			// patron valido
-			begin = System.nanoTime();
-			List<Posicion> validas = Matching.substringMatching(T, patronValido);
-			end = System.nanoTime();
-			
-			if(validas.size() == 0){
-				System.err.println("Se ha producido un fallo. Saliendo del programa...");
-				System.exit(1);
-			}
-			
-			numValidos++;
-			miliValidos += (end - begin);
-			
-
-			// patron invalido
-			begin = System.nanoTime();
-			List<Posicion> invalidas = Matching.substringMatching(T, patronInvalido);
-			end = System.nanoTime();
-			
-			if(invalidas.size() > 0){
-				System.err.println("Se ha producido un fallo. Saliendo del programa...");
-				System.exit(1);
-			}
-			
-			numInvalidos++;
-			miliInvalidos += (end - begin);
-			
-			T.destruir();
+			pruebas(textos);
 		}
 		System.out.println(" Hecho");
+	}
+	
+	private static void pruebas(List<String> textos){
+		CompactSuffixTree T = null;
+		Set<Character> alfabeto = alfabeto(textos);
+
+		String patronValido = "";
+		String patronInvalido = "";
+
+		Random r = new Random();
+
+		// patron valido
+		String t = textos.get(r.nextInt(textos.size()));
+		int inicio = r.nextInt(t.length() / 2);
+		int fin = 1 + r.nextInt(Math.min((t.length() / 2), MAX_PATRON)) + inicio;
+		patronValido = t.substring(inicio, fin);
+
+		// patron invalido
+		for (char c = 65; c < 123; c++) {
+			if (c == '$') {
+				; // caracter invalido en patron
+			}
+			if (!alfabeto.contains(c)) {
+				patronInvalido = patronInvalido + c;
+
+				// salir con probabilidad creciente cuanto mas larga sea la
+				// cadena
+				double probabilidad = 1.0 / (double) patronInvalido.length();
+				if (r.nextDouble() > probabilidad) {
+					break;
+				}
+			}
+		}
+
+		// cambiar tipo de los textos
+		String[] txt = new String[textos.size()];
+		txt = textos.toArray(txt);
+
+		long begin = System.nanoTime();
+		T = new CompactSuffixTree(txt);
+		long end = System.nanoTime();
+		
+		numTrees++;
+		miliTrees += (end - begin);
+		
+		// patron valido
+		begin = System.nanoTime();
+		List<Posicion> validas = Matching.substringMatching(T, patronValido);
+		end = System.nanoTime();
+		
+		if(validas.size() == 0){
+			System.err.println("Se ha producido un fallo. Saliendo del programa...");
+			System.exit(1);
+		}
+		
+		numValidos++;
+		miliValidos += (end - begin);
+		
+
+		// patron invalido
+		begin = System.nanoTime();
+		List<Posicion> invalidas = Matching.substringMatching(T, patronInvalido);
+		end = System.nanoTime();
+		
+		if(invalidas.size() > 0){
+			System.err.println("Se ha producido un fallo. Saliendo del programa...");
+			System.exit(1);
+		}
+		
+		numInvalidos++;
+		miliInvalidos += (end - begin);
+		
+		T.destruir();
 	}
 
 	/**
