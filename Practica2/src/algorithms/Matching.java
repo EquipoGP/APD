@@ -38,13 +38,11 @@ public class Matching {
 			}
 
 			if (p.isEmpty()) {
-				System.out.println("Patron encontrado");
 				/* patron vacio: se ha encontrado la totalidad del patron */
 				seguir = false;
 				
 				List<Nodo> actual = new LinkedList<Nodo>();
 				actual.add(inicio);
-				actual.addAll(hijos);
 				
 				while(!actual.isEmpty()) {
 					Nodo n = actual.remove(0);

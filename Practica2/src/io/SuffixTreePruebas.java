@@ -25,8 +25,11 @@ public class SuffixTreePruebas {
 	 */
 
 	private static final int MAX_PATRON = 100;
-	private static final int MAX_CHARS = 10000000;
-	private static final int MAX_TEXTOS = 50;
+	private static final int MAX_CHARS = 15000;
+	private static final int MAX_TEXTOS = 1500;
+	
+	private static int numValidos, numInvalidos, numTrees;
+	private static long miliValidos, miliInvalidos, miliTrees;
 
 	public static void main(String[] args) throws FileNotFoundException {
 		System.out.println("Cargando archivos...");
@@ -53,6 +56,16 @@ public class SuffixTreePruebas {
 
 		System.out.println("Archivos cargados: " + files.size());
 		System.out.println("Comenzando pruebas...");
+		
+		/* inicializar variables */
+		numTrees = 0;
+		numValidos = 0;
+		numInvalidos = 0;
+		
+		miliTrees = 0;
+		miliValidos = 0;
+		miliInvalidos = 0;
+		/* fin inicializar variables */
 
 		int i = 1;
 		for (File f : files) {
@@ -60,6 +73,18 @@ public class SuffixTreePruebas {
 			pruebas(f);
 			i++;
 		}
+		
+		double mediaTree = (double) miliTrees / (double) numTrees;
+		mediaTree = mediaTree / 1000000000.0;
+		System.out.printf("Tiempo medio para la creacion del arbol: %.2f segundos\n", mediaTree);
+		
+		double mediaValido = (double) miliValidos / (double) numValidos;
+		mediaValido = mediaValido / 1000000000.0;
+		System.out.printf("Tiempo medio para la busqueda de un patron valido: %.2f segundos\n", mediaValido);
+		
+		double mediaInvalido = (double) miliInvalidos / (double) numInvalidos;
+		mediaInvalido = mediaInvalido / 1000000.0;
+		System.out.printf("Tiempo medio para la busqueda un patron invalido: %.2f milisegundos\n", mediaInvalido);
 
 		System.out.println("Pruebas finalizadas.");
 	}
@@ -97,16 +122,19 @@ public class SuffixTreePruebas {
 	 */
 	private static void pruebas(File f) throws FileNotFoundException {
 		boolean fasta = f.getName().endsWith(".fasta");
+		
 		System.out.printf("\tEscaneando...");
 		List<String> textosTotal = escanear(f, fasta);
 		System.out.println(" Hecho");
 
+		System.out.printf("\tTrabajando...");
 		while (!textosTotal.isEmpty()) {
+			CompactSuffixTree T = null;
 			List<String> textos = new LinkedList<String>();
 
 			int num_elems = 0;
 			if (getChars(textosTotal) > MAX_CHARS) {
-				num_elems = MAX_TEXTOS;
+				num_elems = Math.min(MAX_TEXTOS, textosTotal.size());
 			} else {
 				num_elems = textosTotal.size();
 			}
@@ -149,35 +177,41 @@ public class SuffixTreePruebas {
 			String[] txt = new String[textos.size()];
 			txt = textos.toArray(txt);
 
-			System.out.printf("\tCreando arbol compacto (%d textos)...", textos.size());
-			
 			long begin = System.nanoTime();
-			CompactSuffixTree T = new CompactSuffixTree(txt);
+			T = new CompactSuffixTree(txt);
 			long end = System.nanoTime();
-			double secondsCreacion = (end - begin) / 1000000000.0;
 			
-			System.out.printf("Hecho (%.2f segundos)\n", secondsCreacion);
-			
-			System.out.println("Patron valido: " + patronValido);
+			numTrees++;
+			miliTrees += (end - begin);
 			
 			// patron valido
 			begin = System.nanoTime();
 			List<Posicion> validas = Matching.substringMatching(T, patronValido);
 			end = System.nanoTime();
-			double secondsValido = (end - begin) / 1000000.0;
-
-			System.out.printf("\tEl patron %s se encuentra en %d posiciones (%.2f segundos)\n", 
-					patronValido, validas.size(), secondsValido);
+			
+			if(validas.size() == 0){
+				System.err.println("Se ha producido un fallo. Saliendo del programa...");
+				System.exit(1);
+			}
+			
+			numValidos++;
+			miliValidos += (end - begin);
+			
 
 			// patron invalido
 			begin = System.nanoTime();
 			List<Posicion> invalidas = Matching.substringMatching(T, patronInvalido);
 			end = System.nanoTime();
-			double secondsInvalido = (end - begin) / 1000000.0;
-
-			System.out.printf("\tEl patron %s se encuentra en %d posiciones (%.2f segundos)\n", 
-					patronInvalido, invalidas.size(), secondsInvalido);
+			
+			if(invalidas.size() > 0){
+				System.err.println("Se ha producido un fallo. Saliendo del programa...");
+				System.exit(1);
+			}
+			
+			numInvalidos++;
+			miliInvalidos += (end - begin);
 		}
+		System.out.println(" Hecho");
 	}
 
 	/**
