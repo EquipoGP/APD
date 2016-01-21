@@ -15,7 +15,8 @@ public class Identificador {
 	private int posInicio;
 	private int posFinal;
 	
-	private String label;
+	//private String label;
+	private char[] label;
 	
 	/**
 	 * Creacion de un identificador vacio
@@ -53,7 +54,10 @@ public class Identificador {
 	 * @return etiqueta
 	 */
 	public String getLabel() {
-		return label;
+		String etiq = "";
+		for(int i = 0; i < label.length; i++)
+			etiq = etiq + label[i];
+		return etiq;
 	}
 
 	/**
@@ -81,7 +85,10 @@ public class Identificador {
 	 * @param label etiqueta
 	 */
 	public void setLabel(String label) {
-		this.label = label;
+		if(label != null)
+			this.label = label.toCharArray();
+		else
+			this.label = null;
 	}
 	
 	/**
@@ -94,7 +101,7 @@ public class Identificador {
 	@Override
 	public String toString(){
 		if(esLabel()){
-			return label;
+			return getLabel();
 		}
 		else{
 			return "[" + numTexto + ": " + posInicio + ", " + posFinal + "]";

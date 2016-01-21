@@ -158,6 +158,8 @@ public class SuffixTreePruebas {
 			
 			System.out.printf("Hecho (%.2f segundos)\n", secondsCreacion);
 			
+			System.out.println("Patron valido: " + patronValido);
+			
 			// patron valido
 			begin = System.nanoTime();
 			List<Posicion> validas = Matching.substringMatching(T, patronValido);
