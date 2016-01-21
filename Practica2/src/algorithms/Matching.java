@@ -49,10 +49,7 @@ public class Matching {
 				while(!actual.isEmpty()) {
 					Nodo n = actual.remove(0);
 					if (n.getTextos() != null) {
-						for (Posicion pos : n.getTextos()) {
-							// nueva posicion del patron
-							posiciones.add(pos);
-						}
+						posiciones.addAll(n.getTextos());
 					}
 					
 					/* agregar hijos */
