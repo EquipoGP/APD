@@ -24,14 +24,25 @@ public class SuffixTreePruebas {
 	 * Clase para las pruebas del arbol de sufijos compacto
 	 */
 
-	private static final int MAX_PATRON = 100;
-	private static final int MAX_CHARS = 1500;
-	private static final int MAX_TEXTOS = 50;
+	private static final int MAX_PATRON = 10;
+	private static final int MAX_TEXTOS = 5;
 	
 	private static int numValidos, numInvalidos, numTrees;
 	private static long miliValidos, miliInvalidos, miliTrees;
-
+	
 	public static void main(String[] args) throws FileNotFoundException {
+		List<String> strs = escanear(new File("./txt/Ser2.fasta"), true);
+		String[] lol = new String[5];
+		for (int i = 0; i < lol.length; i++) {
+			lol[i] = strs.get(i);
+		}
+		String patron = "CTCACAA";
+		CompactSuffixTree T = new CompactSuffixTree(lol);
+		System.out.println(T.toString());
+		Matching.substringMatching(T, patron);
+	}
+
+	public static void main2(String[] args) throws FileNotFoundException {
 		System.out.println("Cargando archivos...");
 
 		// chequear la validez de la llamada
@@ -128,20 +139,19 @@ public class SuffixTreePruebas {
 		System.out.println(" Hecho");
 
 		System.out.printf("\tTrabajando...");
+		int n = textosTotal.size();
+		int acc = 0;
 		while (!textosTotal.isEmpty()) {
 			List<String> textos = new LinkedList<String>();
 
-			int num_elems = 0;
-			if (getChars(textosTotal) > MAX_CHARS) {
-				num_elems = Math.min(MAX_TEXTOS, textosTotal.size());
-			} else {
-				num_elems = textosTotal.size();
-			}
+			int num_elems = Math.min(MAX_TEXTOS, textosTotal.size());
 
 			for (int i = 0; i < num_elems; i++) {
 				textos.add(textosTotal.remove(0));
 			}
-
+			acc += num_elems;
+			System.out.print(" (" + acc + "/" + n + ")");
+			
 			pruebas(textos);
 		}
 		System.out.println(" Hecho");
@@ -183,17 +193,21 @@ public class SuffixTreePruebas {
 		String[] txt = new String[textos.size()];
 		txt = textos.toArray(txt);
 
+		System.out.print("CST...");
 		long begin = System.nanoTime();
 		T = new CompactSuffixTree(txt);
 		long end = System.nanoTime();
+		System.out.println(" Done");
 		
 		numTrees++;
 		miliTrees += (end - begin);
 		
+		System.out.print("Patron valido (" + patronValido + ")...");
 		// patron valido
 		begin = System.nanoTime();
 		List<Posicion> validas = Matching.substringMatching(T, patronValido);
 		end = System.nanoTime();
+		System.out.println(" Done");
 		
 		if(validas.size() == 0){
 			System.err.println("Se ha producido un fallo. Saliendo del programa...");
@@ -202,12 +216,13 @@ public class SuffixTreePruebas {
 		
 		numValidos++;
 		miliValidos += (end - begin);
-		
 
+		System.out.print("Patron invalido...");
 		// patron invalido
 		begin = System.nanoTime();
 		List<Posicion> invalidas = Matching.substringMatching(T, patronInvalido);
 		end = System.nanoTime();
+		System.out.println(" Done");
 		
 		if(invalidas.size() > 0){
 			System.err.println("Se ha producido un fallo. Saliendo del programa...");
@@ -276,18 +291,5 @@ public class SuffixTreePruebas {
 		}
 
 		return alfabeto;
-	}
-	
-	/**
-	 * 
-	 * @param txt
-	 * @return
-	 */
-	private static int getChars(List<String> txt){
-		int n = 0;
-		for(String t : txt){
-			n += t.length();
-		}
-		return n;
 	}
 }

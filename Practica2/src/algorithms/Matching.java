@@ -56,7 +56,8 @@ public class Matching {
 					}
 				}
 			} else {
-				/* todavia no se ha encontrado la totalidad del patorn */
+				/* todavia no se ha encontrado la totalidad del patron */
+				seguir = false;
 				for (Nodo n : hijos) {
 					// obtener etiqueta
 					String etiq = "";
