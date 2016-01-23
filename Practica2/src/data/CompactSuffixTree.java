@@ -443,27 +443,4 @@ public class CompactSuffixTree {
 		}
 		return lista;
 	}
-	
-	/**
-	 * Destruye el arbol
-	 */
-	public void destruir(){
-		List<Nodo> actuales = new LinkedList<Nodo>();
-		actuales.add(raiz);
-		
-		// recorre el arbol
-		while(!actuales.isEmpty()){
-			Nodo n = actuales.remove(0);
-			if(n.getHijos() != null){
-				actuales.addAll(n.getHijos());
-			}
-			n.destruir();
-		}
-		
-		for(int i = 0; i < textos.length; i++){
-			textos[i] = null;
-		}
-		this.textos = null;
-	}
-	
 }

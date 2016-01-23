@@ -25,7 +25,7 @@ public class SuffixTreePruebas {
 	 */
 
 	private static final int MAX_PATRON = 10;
-	private static final int MAX_TEXTOS = 5;
+	private static final int MAX_CHARS = 500;
 	
 	private static int numValidos, numInvalidos, numTrees;
 	private static long miliValidos, miliInvalidos, miliTrees;
@@ -132,7 +132,7 @@ public class SuffixTreePruebas {
 		while (!textosTotal.isEmpty()) {
 			List<String> textos = new LinkedList<String>();
 
-			int num_elems = Math.min(MAX_TEXTOS, textosTotal.size());
+			int num_elems = getTextos(textosTotal);
 
 			for (int i = 0; i < num_elems; i++) {
 				textos.add(textosTotal.remove(0));
@@ -155,27 +155,10 @@ public class SuffixTreePruebas {
 		Random r = new Random();
 
 		// patron valido
-		String t = textos.get(r.nextInt(textos.size()));
-		int inicio = r.nextInt(t.length() / 2);
-		int fin = 1 + r.nextInt(Math.min((t.length() / 2), MAX_PATRON)) + inicio;
-		patronValido = t.substring(inicio, fin);
+		patronValido = patronValido(textos, r);
 
 		// patron invalido
-		for (char c = 65; c < 123; c++) {
-			if (c == '$') {
-				; // caracter invalido en patron
-			}
-			if (!alfabeto.contains(c)) {
-				patronInvalido = patronInvalido + c;
-
-				// salir con probabilidad creciente cuanto mas larga sea la
-				// cadena
-				double probabilidad = 1.0 / (double) patronInvalido.length();
-				if (r.nextDouble() > probabilidad) {
-					break;
-				}
-			}
-		}
+		patronInvalido = patronInvalido(alfabeto, r);
 
 		// cambiar tipo de los textos
 		String[] txt = new String[textos.size()];
@@ -219,8 +202,6 @@ public class SuffixTreePruebas {
 		
 		numInvalidos++;
 		miliInvalidos += (end - begin);
-		
-		T.destruir();
 	}
 
 	/**
@@ -279,5 +260,55 @@ public class SuffixTreePruebas {
 		}
 
 		return alfabeto;
+	}
+	
+	/**
+	 * 
+	 * @param textos
+	 * @return
+	 */
+	private static int getTextos(List<String> textos){
+		int chars = 0;
+		int numTextos = 0;
+		
+		while(chars < MAX_CHARS){
+			String s = textos.get(numTextos);
+			chars = chars + s.length();
+			numTextos++;
+		}
+		return numTextos;
+	}
+	
+	/**
+	 * 
+	 * @param textos
+	 * @param r
+	 * @return
+	 */
+	private static String patronValido(List<String> textos, Random r){
+		String t = textos.get(r.nextInt(textos.size()));
+		int inicio = r.nextInt(t.length() / 2);
+		int fin = 1 + r.nextInt(Math.min((t.length() / 2), MAX_PATRON)) + inicio;
+		return t.substring(inicio, fin);
+	}
+	
+	private static String patronInvalido(Set<Character> alfabeto, Random r){
+		String patronInvalido = "";
+		for (char c = 65; c < 123; c++) {
+			if (c == '$') {
+				; // caracter invalido en patron
+			}
+			if (!alfabeto.contains(c)) {
+				patronInvalido = patronInvalido + c;
+
+				// salir con probabilidad creciente cuanto mas larga sea la
+				// cadena
+				double probabilidad = 1.0 / (double) patronInvalido.length();
+				if (r.nextDouble() > probabilidad) {
+					break;
+				}
+			}
+		}
+		return patronInvalido;
 	}
 }
