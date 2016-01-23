@@ -7,6 +7,7 @@ package io;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +27,7 @@ public class SuffixTreePruebasEficiencia {
 
 	private static final int MAX_PATRON = 10;
 	private static final int MAX_CHARS = 500;
+	private static boolean substring = false;
 	
 	private static int numValidos, numInvalidos, numTrees;
 	private static long miliValidos, miliInvalidos, miliTrees;
@@ -39,22 +41,30 @@ public class SuffixTreePruebasEficiencia {
 
 		// chequear la validez de la llamada
 		if (args.length == 0) {
-			System.err.println("Uso incorrecto: SuffixTreePruebasEficiencia (<directorio|fichero>)+");
+			System.err.println("Uso incorrecto: SuffixTreePruebasEficiencia (-sm|-ss)? (<directorio|fichero>)+");
 			System.exit(1);
 		}
 
 		List<File> files = new LinkedList<File>();
 		for (String s : args) {
-			File f = new File(s);
-
-			// chequear que existe el fichero
-			if (!f.exists()) {
-				System.err.println("Fichero no existente: " + s);
-				System.exit(1);
+			if(s.equals("-sm")){
+				substring = false;
 			}
-
-			List<File> filesS = getFilesFromFile(f);
-			files.addAll(filesS);
+			else if(s.equals("-ss")){
+				substring = true;
+			}
+			else{
+				File f = new File(s);
+				
+				// chequear que existe el fichero
+				if (!f.exists()) {
+					System.err.println("Fichero no existente: " + s);
+					System.exit(1);
+				}
+				
+				List<File> filesS = getFilesFromFile(f);
+				files.addAll(filesS);
+			}
 		}
 
 		System.out.println("Archivos cargados: " + files.size());
@@ -130,7 +140,9 @@ public class SuffixTreePruebasEficiencia {
 		List<String> textosTotal = escanear(f, fasta);
 		System.out.println(" Hecho");
 
-		System.out.print("\tTrabajando...");
+		System.out.println("\tTrabajando...");
+		int acc = 0;
+		int n = textosTotal.size();
 		while (!textosTotal.isEmpty()) {
 			List<String> textos = new LinkedList<String>();
 
@@ -139,21 +151,17 @@ public class SuffixTreePruebasEficiencia {
 			for (int i = 0; i < num_elems; i++) {
 				textos.add(textosTotal.remove(0));
 			}
+			acc += num_elems;
+			System.out.print("\t\t(" + acc + "/" + n + ")");	// TODO
 			pruebas(textos);
+			Calendar now = Calendar.getInstance();	// TODO
+			System.out.println(now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE));	// TODO
+			// TODO llamada garbage collector (creo que eran dos veces)
+			System.gc();
+			System.gc();
 		}
 		System.out.println(" Hecho");
 	}
-	
-	public static String pad(int i){
-	    String s = ""+i;
-	    if(s.length()==1){
-	      s += "  ";
-	    }
-	    else if(s.length()==2){
-	      s += " ";
-	    }
-	    return s;
-	  }
 	
 	/**
 	 * @param textos lista de textos sobre los que realizar las pruebas
@@ -272,6 +280,9 @@ public class SuffixTreePruebasEficiencia {
 	 * @return numero de textos que utilizar para crear el ASC
 	 */
 	private static int getTextos(List<String> textos){
+		if(!substring){
+			return Math.min(1, textos.size());
+		}
 		int chars = 0;
 		int numTextos = 0;
 		
