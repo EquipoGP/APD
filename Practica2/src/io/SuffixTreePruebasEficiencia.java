@@ -130,9 +130,7 @@ public class SuffixTreePruebasEficiencia {
 		List<String> textosTotal = escanear(f, fasta);
 		System.out.println(" Hecho");
 
-		System.out.printf("\tTrabajando...");
-		int n = textosTotal.size();
-		int acc = 0;
+		System.out.print("\tTrabajando...");
 		while (!textosTotal.isEmpty()) {
 			List<String> textos = new LinkedList<String>();
 
@@ -141,13 +139,21 @@ public class SuffixTreePruebasEficiencia {
 			for (int i = 0; i < num_elems; i++) {
 				textos.add(textosTotal.remove(0));
 			}
-			acc += num_elems;
-			System.out.print(" (" + acc + "/" + n + ")");
-			
 			pruebas(textos);
 		}
 		System.out.println(" Hecho");
 	}
+	
+	public static String pad(int i){
+	    String s = ""+i;
+	    if(s.length()==1){
+	      s += "  ";
+	    }
+	    else if(s.length()==2){
+	      s += " ";
+	    }
+	    return s;
+	  }
 	
 	/**
 	 * @param textos lista de textos sobre los que realizar las pruebas
@@ -171,21 +177,17 @@ public class SuffixTreePruebasEficiencia {
 		String[] txt = new String[textos.size()];
 		txt = textos.toArray(txt);
 
-		System.out.print("CST...");
 		long begin = System.nanoTime();
 		T = new CompactSuffixTree(txt);
 		long end = System.nanoTime();
-		System.out.println(" Done");
 		
 		numTrees++;
 		miliTrees += (end - begin);
 		
-		System.out.print("Patron valido (" + patronValido + ")...");
 		// patron valido
 		begin = System.nanoTime();
 		Set<Posicion> validas = Matching.substringMatching(T, patronValido);
 		end = System.nanoTime();
-		System.out.println(" Done");
 		
 		if(validas.size() == 0){
 			System.err.println("Se ha producido un fallo. Saliendo del programa...");
@@ -195,12 +197,10 @@ public class SuffixTreePruebasEficiencia {
 		numValidos++;
 		miliValidos += (end - begin);
 
-		System.out.print("Patron invalido...");
 		// patron invalido
 		begin = System.nanoTime();
 		Set<Posicion> invalidas = Matching.substringMatching(T, patronInvalido);
 		end = System.nanoTime();
-		System.out.println(" Done");
 		
 		if(invalidas.size() > 0){
 			System.err.println("Se ha producido un fallo. Saliendo del programa...");
@@ -275,7 +275,7 @@ public class SuffixTreePruebasEficiencia {
 		int chars = 0;
 		int numTextos = 0;
 		
-		while(chars < MAX_CHARS){
+		while(chars < MAX_CHARS && numTextos < textos.size()){
 			String s = textos.get(numTextos);
 			chars = chars + s.length();
 			numTextos++;
