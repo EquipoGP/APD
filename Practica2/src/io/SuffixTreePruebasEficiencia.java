@@ -26,7 +26,7 @@ public class SuffixTreePruebasEficiencia {
 	 */
 
 	private static final int MAX_PATRON = 10;
-	private static final int MAX_CHARS = 500;
+	private static final int MAX_CHARS = 50000;
 	private static boolean substring = false;
 	
 	private static int numValidos, numInvalidos, numTrees;
@@ -88,12 +88,12 @@ public class SuffixTreePruebasEficiencia {
 		}
 		
 		double mediaTree = (double) miliTrees / (double) numTrees;
-		mediaTree = mediaTree / 1000000000.0;
-		System.out.printf("Tiempo medio para la creacion del arbol: %.2f segundos\n", mediaTree);
+		mediaTree = mediaTree / 1000000.0;
+		System.out.printf("Tiempo medio para la creacion del arbol: %.2f milisegundos\n", mediaTree);
 		
 		double mediaValido = (double) miliValidos / (double) numValidos;
-		mediaValido = mediaValido / 1000000000.0;
-		System.out.printf("Tiempo medio para la busqueda de un patron valido: %.2f segundos\n", mediaValido);
+		mediaValido = mediaValido / 1000000.0;
+		System.out.printf("Tiempo medio para la busqueda de un patron valido: %.2f milisegundos\n", mediaValido);
 		
 		double mediaInvalido = (double) miliInvalidos / (double) numInvalidos;
 		mediaInvalido = mediaInvalido / 1000000.0;
@@ -152,11 +152,10 @@ public class SuffixTreePruebasEficiencia {
 				textos.add(textosTotal.remove(0));
 			}
 			acc += num_elems;
-			System.out.print("\t\t(" + acc + "/" + n + ")");	// TODO
+			System.out.print("\t\t(" + acc + "/" + n + ")");
 			pruebas(textos);
-			Calendar now = Calendar.getInstance();	// TODO
-			System.out.println(now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE));	// TODO
-			// TODO llamada garbage collector (creo que eran dos veces)
+			Calendar now = Calendar.getInstance();
+			System.out.println(now.get(Calendar.HOUR_OF_DAY) + ":" + now.get(Calendar.MINUTE));
 			System.gc();
 			System.gc();
 		}
