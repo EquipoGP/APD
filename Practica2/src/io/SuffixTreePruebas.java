@@ -145,6 +145,9 @@ public class SuffixTreePruebas {
 		System.out.println(" Hecho");
 	}
 	
+	/**
+	 * @param textos lista de textos sobre los que realizar las pruebas
+	 */
 	private static void pruebas(List<String> textos){
 		CompactSuffixTree T = null;
 		Set<Character> alfabeto = alfabeto(textos);
@@ -205,10 +208,9 @@ public class SuffixTreePruebas {
 	}
 
 	/**
-	 * 
-	 * @param f
-	 * @param fasta
-	 * @return
+	 * @param f fichero
+	 * @param fasta true si es fasta, false en caso contrario (formato del fichero)
+	 * @return lista de cadenas que representan los distintos textos del fichero
 	 * @throws FileNotFoundException
 	 */
 	private static List<String> escanear(File f, boolean fasta) throws FileNotFoundException {
@@ -245,9 +247,8 @@ public class SuffixTreePruebas {
 	}
 
 	/**
-	 * 
-	 * @param textos
-	 * @return
+	 * @param textos lista de textos en los que encontrar el alfabeto
+	 * @return conjunto de caracteres que conforman el alfabeto de los textos
 	 */
 	private static Set<Character> alfabeto(List<String> textos) {
 		Set<Character> alfabeto = new HashSet<Character>();
@@ -263,7 +264,6 @@ public class SuffixTreePruebas {
 	}
 	
 	/**
-	 * 
 	 * @param textos
 	 * @return
 	 */
