@@ -29,20 +29,8 @@ public class SuffixTreePruebas {
 	
 	private static int numValidos, numInvalidos, numTrees;
 	private static long miliValidos, miliInvalidos, miliTrees;
-	
-	public static void main(String[] args) throws FileNotFoundException {
-		List<String> strs = escanear(new File("./txt/Ser2.fasta"), true);
-		String[] lol = new String[5];
-		for (int i = 0; i < lol.length; i++) {
-			lol[i] = strs.get(i);
-		}
-		String patron = "CTCACAA";
-		CompactSuffixTree T = new CompactSuffixTree(lol);
-		System.out.println(T.toString());
-		Matching.substringMatching(T, patron);
-	}
 
-	public static void main2(String[] args) throws FileNotFoundException {
+	public static void main(String[] args) throws FileNotFoundException {
 		System.out.println("Cargando archivos...");
 
 		// chequear la validez de la llamada
