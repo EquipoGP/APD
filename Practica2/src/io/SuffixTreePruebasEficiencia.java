@@ -39,7 +39,7 @@ public class SuffixTreePruebasEficiencia {
 
 		// chequear la validez de la llamada
 		if (args.length == 0) {
-			System.err.println("Uso incorrecto: SuffixTreePruebasEficiencia (<directorio|fichero>)*");
+			System.err.println("Uso incorrecto: SuffixTreePruebasEficiencia (<directorio|fichero>)+");
 			System.exit(1);
 		}
 

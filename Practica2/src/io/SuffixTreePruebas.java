@@ -23,7 +23,7 @@ public class SuffixTreePruebas {
 	 */
 	public static void main(String[] args) {
 		if(args.length < 2){
-			System.err.println("Uso incorrecto: SuffixTreePruebas <texto>* <patron>");
+			System.err.println("Uso incorrecto: SuffixTreePruebas <texto>+ <patron>");
 			System.exit(1);
 		}
 		
