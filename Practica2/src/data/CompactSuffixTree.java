@@ -244,7 +244,7 @@ public class CompactSuffixTree {
 		List<Nodo> nodos = new LinkedList<Nodo>();
 		
 		List<Nodo> actuales = new LinkedList<Nodo>();
-		actuales.add(raiz);
+		actuales.addAll(raiz.getHijos());
 		
 		// recorre el arbol
 		while(!actuales.isEmpty()){

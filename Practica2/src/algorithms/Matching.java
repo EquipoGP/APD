@@ -79,7 +79,10 @@ public class Matching {
 					String ee = etiq.substring(0, min);
 
 					// matchear etiqueta y patron
-					if (pp.equals(ee)) {
+					if(etiq.length() == 0){
+						;	// final de la cadena, pero todavia queda parte del patron por leer
+					}
+					else if (pp.equals(ee)) {
 						// el patron coincide con el texto
 						inicio = n;
 						p = p.substring(min);
