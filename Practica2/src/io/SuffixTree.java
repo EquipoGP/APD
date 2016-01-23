@@ -8,6 +8,7 @@ package io;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 import algorithms.Matching;
 import data.CompactSuffixTree;
@@ -53,7 +54,8 @@ public class SuffixTree {
 				/* Ejecuta el algoritmo para String Matching */
 				if(patron != null){
 					CompactSuffixTree T = new CompactSuffixTree(textos);
-					List<Posicion> pos = Matching.substringMatching(T, patron);
+					Set<Posicion> posiciones = Matching.substringMatching(T, patron);
+					List<Posicion> pos = new LinkedList<Posicion>(posiciones);
 					
 					/* Muestra la respuesta para String Matching */
 					if (pos.isEmpty()) {
@@ -90,7 +92,7 @@ public class SuffixTree {
 				/* Ejecuta el algoritmo para substring */
 				if(patron != null){
 					CompactSuffixTree T = new CompactSuffixTree(textos);
-					List<Posicion> pos = Matching.substringMatching(T, patron);
+					Set<Posicion> pos = Matching.substringMatching(T, patron);
 					
 					/* Muestra la respuesta para substring */
 					if (pos.isEmpty()) {
@@ -101,8 +103,8 @@ public class SuffixTree {
 								+ " textos: ");
 						
 						List<Integer> textosPatron = new LinkedList<Integer>();
-						for (int i = 0; i < pos.size(); i++) {
-							int nuevoTexto = pos.get(i).getTexto();
+						for (Posicion p : pos) {
+							int nuevoTexto = p.getTexto();
 							if (!textosPatron.contains(nuevoTexto)) {
 								textosPatron.add(nuevoTexto);
 							}

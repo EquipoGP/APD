@@ -5,8 +5,10 @@
 
 package algorithms;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import data.CompactSuffixTree;
 import data.Nodo;
@@ -22,9 +24,9 @@ public class Matching {
 	 * @return una lista con las posiciones en las que se encuentra el patron
 	 * en los textos
 	 */
-	public static List<Posicion> substringMatching(CompactSuffixTree T, String patron) {
+	public static Set<Posicion> substringMatching(CompactSuffixTree T, String patron) {
 		/* inicializacion */
-		List<Posicion> posiciones = new LinkedList<Posicion>();
+		Set<Posicion> posiciones = new HashSet<Posicion>();
 		String[] textos = T.getTextos();
 
 		String p = patron;

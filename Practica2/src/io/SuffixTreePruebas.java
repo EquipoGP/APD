@@ -193,7 +193,7 @@ public class SuffixTreePruebas {
 		System.out.print("Patron valido (" + patronValido + ")...");
 		// patron valido
 		begin = System.nanoTime();
-		List<Posicion> validas = Matching.substringMatching(T, patronValido);
+		Set<Posicion> validas = Matching.substringMatching(T, patronValido);
 		end = System.nanoTime();
 		System.out.println(" Done");
 		
@@ -208,7 +208,7 @@ public class SuffixTreePruebas {
 		System.out.print("Patron invalido...");
 		// patron invalido
 		begin = System.nanoTime();
-		List<Posicion> invalidas = Matching.substringMatching(T, patronInvalido);
+		Set<Posicion> invalidas = Matching.substringMatching(T, patronInvalido);
 		end = System.nanoTime();
 		System.out.println(" Done");
 		
