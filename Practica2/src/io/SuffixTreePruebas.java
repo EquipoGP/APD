@@ -4,6 +4,7 @@
  */
 package io;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -41,28 +42,58 @@ public class SuffixTreePruebas {
 		
 		if(textos.length == 1){	// string matching
 			List<Posicion> pos = new LinkedList<Posicion>(posiciones);
+			List<Integer> numPos = new LinkedList<Integer>();
 			
-			/* Muestra la respuesta para String Matching */
+			/* Respuesta para String Matching */
+			System.out.println();
+			System.out.println("String Matching");
+			System.out.println("===============");
+			System.out.println("Patron: " + patron);
+			System.out.println("Texto: " + textos[0]);
+			System.out.println();
+			
 			if (pos.isEmpty()) {
 				System.out.println("El patron '" + patron + "' no aparece en el texto.");
 			}
 			else {
-				System.out.print("El patron '" + patron + "' aparece en el"
-						+ " texto en las posiciones: ");
-				System.out.print(pos.get(0).getPosicion());
-				for (int i = 1; i < pos.size(); i++) {
-					System.out.print(", " + pos.get(i).getPosicion());
+				
+				for (int i = 0; i < pos.size(); i++) {
+					numPos.add(pos.get(i).getPosicion());
+				}
+				Collections.sort(numPos);
+				
+				System.out.println("El patron '" + patron + "' aparece en el"
+						+ " texto en: ");
+				System.out.print("	Posiciones: " + numPos.get(0));
+				for (int i = 1; i < numPos.size(); i++) {
+					System.out.print(", " + numPos.get(i));
 				}
 			}
+			System.out.println();
 		}
 		else{
-			/* Muestra la respuesta para substring */
+			
+			/* Respuesta para substring */
+			System.out.println("Problema del substring");
+			System.out.println("======================");
+			System.out.println("Textos: ");
+			
+			for (int i = 0; i < textos.length; i++) {
+				
+				/* Muestra todos los textos */
+				System.out.println("	" + (i+1) + ": " + textos[i]);
+				
+			}
+			System.out.println();
+			
 			if (posiciones.isEmpty()) {
 				System.out.println("El patron '" + patron + "' no aparece en ningun texto.");
 			}
 			else {
 				System.out.print("El patron '" + patron + "' aparece en los"
 						+ " textos: ");
+				
+				System.out.println();
 				
 				List<Integer> textosPatron = new LinkedList<Integer>();
 				for (Posicion p : posiciones) {
@@ -71,12 +102,23 @@ public class SuffixTreePruebas {
 						textosPatron.add(nuevoTexto);
 					}
 				}
-				
-				System.out.print(textosPatron.get(0));
-				for (int i = 1; i < textosPatron.size(); i++) {
-					System.out.print(", " + textosPatron.get(i));
+				Collections.sort(textosPatron);
+				int maxCaracteres = 30;
+				for (int i = 0; i < textosPatron.size(); i++) {
+					
+					int j = textosPatron.get(i) - 1;
+					
+					/* Muestra los textos en los que se ha encontrado el patron */
+					if (textos[j].length() > maxCaracteres) {
+						System.out.println("	" + (j+1) + ": " + textos[j].substring(0, maxCaracteres) + "...");
+					}
+					else {
+						System.out.println("	" + (j+1) + ": " + textos[j]);
+					}
+					
 				}
 			}
+			System.out.println();
 		}
 	}
 
